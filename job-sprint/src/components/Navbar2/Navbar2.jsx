@@ -8,9 +8,12 @@ import ChatIcon from '@mui/icons-material/Chat';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddSharpIcon from '@mui/icons-material/AddSharp';
 import MyImage from "../../assets/My_image.jpeg";
+import { useLocation } from 'react-router-dom';
 
 const Navbar2 = () => {
     const [searchTerm, setSearchTerm] = useState(false);
+    const location = useLocation();
+    console.log(location)
     return (
         <div className='bg-white h-13 flex justify-between py-1 xl: px-50 fixed top-0 w-full z-1000 '>
             <div className=' flex gap-2 items-center '>
@@ -33,42 +36,39 @@ const Navbar2 = () => {
                 </div>
 
             </div>
-
             <div className=' hidden gap-10 md:flex '>
                 <div className=' flex flex-col items-center cursor-pointer'>
-                    <AddHomeIcon />
-                    <div className='text-sm text-gray-500'>Home
+                    <AddHomeIcon sx={{ color: location.pathname === "/feed" ? "black" : "gray" }} />
+                    <div className = {`text-sm text-gray-500 ${location.pathname === "/feed" ? "border-b-3" : ""}`}>Home
                     </div>
                 </div>
                 <div className=' flex flex-col items-center cursor-pointer'>
-                    <Diversity3SharpIcon />
-                    <div className='text-sm text-gray-500'>My network
+                    <Diversity3SharpIcon sx={{ color: location.pathname === "/mynetwork" ? "black" : "gray" }} />
+                    <div className={`text-sm text-gray-500 ${location.pathname === "/mynetwork" ? "border-b-3" : ""}`}>My network
                     </div>
                 </div>
                 <div className=' flex flex-col items-center cursor-pointer'>
-                    <AddSharpIcon />
-                    <div className='text-sm text-gray-500'>Resume
-                    </div>
-
-                </div>
-                <div className=' flex flex-col items-center cursor-pointer'>
-                    <WorkIcon />
-                    <div className='text-sm text-gray-500'>Jobs
+                    <AddSharpIcon sx={{ color: location.pathname === "/resume" ? "black" : "gray" }} />
+                    <div className={`text-sm text-gray-500 ${location.pathname === "/resume" ? "border-b-3" : ""}`}>Resume
                     </div>
                 </div>
                 <div className=' flex flex-col items-center cursor-pointer'>
-                    <ChatIcon />
-                    <div className='text-sm text-gray-500'>Messages
+                    <WorkIcon sx={{ color: location.pathname === "/jobs" ? "black" : "gray" }} />
+                    <div className={`text-sm text-gray-500 ${location.pathname === "/jobs" ? "border-b-3" : ""}`}>Jobs
                     </div>
                 </div>
                 <div className=' flex flex-col items-center cursor-pointer'>
-                    <NotificationsIcon />
-                    <div className='text-sm text-gray-500'>Notifications
+                    <ChatIcon sx={{ color: location.pathname === "/messages" ? "black" : "gray" }} />
+                    <div className={`text-sm text-gray-500 ${location.pathname === "/messages" ? "border-b-3" : ""}`}>Messages
                     </div>
-
                 </div>
                 <div className=' flex flex-col items-center cursor-pointer'>
-                    <img className ="w-6 h-6 rounded-full object-cover" src={MyImage} alt="My Image" />
+                    <div><NotificationsIcon sx={{ color: location.pathname === "/notifications" ? "black" : "gray" }} /> <span className='p-1 rounded-full text-sm bg-red-600 text-white'>1</span></div>
+                    <div className={`text-sm text-gray-500 ${location.pathname === "/notifications" ? "border-b-3" : ""}`}>Notifications
+                    </div>
+                </div>
+                <div className=' flex flex-col items-center cursor-pointer'>
+                    <img className="w-6 h-6 rounded-full object-cover" src={MyImage} alt="My Image" />
                     <div className='text-sm text-gray-500'>Me
                     </div>
 

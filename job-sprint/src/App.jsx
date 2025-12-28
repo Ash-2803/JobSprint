@@ -12,7 +12,7 @@ import Navbar2 from './components/Navbar2/Navbar2'
 import Feeds from './Pages/Feed/Feeds'
 
 function App() {
-  const isLogin = true;
+  const isLogin = false;
   const [count, setCount] = useState(0)
 
   return (
@@ -24,7 +24,7 @@ function App() {
       <Route path = '/signin' element={<SignIn/>}/>
       <Route path='/feed' element={<Feeds/>}/>
     </Routes>
-    <Footer/>
+    {/* <Footer/> */}
     </div>
   )
 }
