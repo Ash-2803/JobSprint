@@ -12,7 +12,7 @@ import Navbar2 from './components/Navbar2/Navbar2'
 import Feeds from './Pages/Feed/Feeds'
 
 function App() {
-  const isLogin = false;
+  const isLogin = true;
   const [count, setCount] = useState(0)
 
   return (
