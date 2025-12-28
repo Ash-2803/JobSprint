@@ -1,6 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
 import './Navbar2.css'
+import AddHomeIcon from '@mui/icons-material/AddHome';
+import Diversity3SharpIcon from '@mui/icons-material/Diversity3Sharp';
+import WorkIcon from '@mui/icons-material/Work';
+import ChatIcon from '@mui/icons-material/Chat';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import AddSharpIcon from '@mui/icons-material/AddSharp';
+import MyImage from "../../assets/My_image.jpeg";
 
 const Navbar2 = () => {
     const [searchTerm, setSearchTerm] = useState(false);
@@ -27,6 +34,47 @@ const Navbar2 = () => {
 
             </div>
 
+            <div className=' hidden gap-10 md:flex '>
+                <div className=' flex flex-col items-center cursor-pointer'>
+                    <AddHomeIcon />
+                    <div className='text-sm text-gray-500'>Home
+                    </div>
+                </div>
+                <div className=' flex flex-col items-center cursor-pointer'>
+                    <Diversity3SharpIcon />
+                    <div className='text-sm text-gray-500'>My network
+                    </div>
+                </div>
+                <div className=' flex flex-col items-center cursor-pointer'>
+                    <AddSharpIcon />
+                    <div className='text-sm text-gray-500'>Resume
+                    </div>
+
+                </div>
+                <div className=' flex flex-col items-center cursor-pointer'>
+                    <WorkIcon />
+                    <div className='text-sm text-gray-500'>Jobs
+                    </div>
+                </div>
+                <div className=' flex flex-col items-center cursor-pointer'>
+                    <ChatIcon />
+                    <div className='text-sm text-gray-500'>Messages
+                    </div>
+                </div>
+                <div className=' flex flex-col items-center cursor-pointer'>
+                    <NotificationsIcon />
+                    <div className='text-sm text-gray-500'>Notifications
+                    </div>
+
+                </div>
+                <div className=' flex flex-col items-center cursor-pointer'>
+                    <img className ="w-6 h-6 rounded-full object-cover" src={MyImage} alt="My Image" />
+                    <div className='text-sm text-gray-500'>Me
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     )
 }
