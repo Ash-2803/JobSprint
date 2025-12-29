@@ -6,6 +6,7 @@ import PlayCircleFilledSharpIcon from '@mui/icons-material/PlayCircleFilledSharp
 import AddPhotoAlternateSharpIcon from '@mui/icons-material/AddPhotoAlternateSharp';
 import DescriptionSharpIcon from '@mui/icons-material/DescriptionSharp';
 import Advertisement from '../../components/Advertisement/Advertisement';
+import Post from '../../components/Posts/Post';
 
 
 const Feeds = () => {
@@ -60,7 +61,9 @@ const Feeds = () => {
       
       <div className='border b-1 border-gray-400 w-full my-5'/>
       <div className='w-full flex flex-col gap-5 '>
-      Post
+      <Post/>
+      <Post/>
+      <Post/>
       </div>
     </div>
       {/* right side  */}

@@ -4,7 +4,7 @@ import Googlelogincomponent from '../../components/GoogleLogin/Googlelogincompon
 
 const Signup = () => {
     return (
-        <div className='w-full flex flex-col items-center justify-center box-border'>
+        <div className='w-full flex flex-col items-center justify-center box-border my-10'>
             <h1 className='text-4xl font-bold text-center mt-10'>Make your dream job come true</h1>
             <div className='w-[85%] md:w-[30%] shadow-lg bg-white rounded-lg mt-10 p-6 box-border'>
                 <div className='flex flex-col gap-4'>
