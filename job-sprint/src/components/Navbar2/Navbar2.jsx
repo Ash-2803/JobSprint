@@ -42,16 +42,16 @@ const Navbar2 = () => {
                     <div className = {`text-sm text-gray-500 ${location.pathname === "/feed" ? "border-b-3" : ""}`}>Home
                     </div>
                 </Link>
-                <Link className=' flex flex-col items-center cursor-pointer'>
+                <Link to="/mynetwork" className=' flex flex-col items-center cursor-pointer'>
                     <Diversity3SharpIcon sx={{ color: location.pathname === "/mynetwork" ? "black" : "gray" }} />
                     <div className={`text-sm text-gray-500 ${location.pathname === "/mynetwork" ? "border-b-3" : ""}`}>My network
                     </div>
                 </Link>
-                <div className=' flex flex-col items-center cursor-pointer'>
+                <Link to="/resume" className=' flex flex-col items-center cursor-pointer'>
                     <AddSharpIcon sx={{ color: location.pathname === "/resume" ? "black" : "gray" }} />
                     <div className={`text-sm text-gray-500 ${location.pathname === "/resume" ? "border-b-3" : ""}`}>Resume
                     </div>
-                </div>
+                </Link>
                 <div className=' flex flex-col items-center cursor-pointer'>
                     <WorkIcon sx={{ color: location.pathname === "/jobs" ? "black" : "gray" }} />
                     <div className={`text-sm text-gray-500 ${location.pathname === "/jobs" ? "border-b-3" : ""}`}>Jobs

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
 import Navbar1 from './components/NavbarV1/navbar1'
 import LandingPage from './Pages/Landing Pages/LandingPage'
@@ -11,6 +11,7 @@ import SignIn from './Pages/Login/SignIn'
 import Navbar2 from './components/Navbar2/Navbar2'
 import Feeds from './Pages/Feed/Feeds'
 import Mynetwork from './Pages/Network/Mynetwork'
+import Resume from './Pages/Resume/Resume'
 
 function App() {
   const isLogin = true;
@@ -25,6 +26,7 @@ function App() {
       <Route path = '/signin' element={<SignIn/>}/>
       <Route path='/feed' element={<Feeds/>}/>
       <Route path='/mynetwork' element={<Mynetwork/>}/>
+      <Route path='/resume' element={<Resume/>}/>
     </Routes>
     {/* <Footer/> */}
     </div>
