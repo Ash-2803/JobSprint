@@ -5,6 +5,7 @@ import MyImage from "../../assets/My_image.jpeg";
 import PlayCircleFilledSharpIcon from '@mui/icons-material/PlayCircleFilledSharp';
 import AddPhotoAlternateSharpIcon from '@mui/icons-material/AddPhotoAlternateSharp';
 import DescriptionSharpIcon from '@mui/icons-material/DescriptionSharp';
+import Advertisement from '../../components/Advertisement/Advertisement';
 
 
 const Feeds = () => {
@@ -32,6 +33,7 @@ const Feeds = () => {
       {/* middle side */}
       
     <div className='w-full py-5 sm:w-[50%]'>
+      {/* post box */}
       <div>
         <Card padding={1}>
         <div className='flex gap-2 items-center'>
@@ -55,14 +57,12 @@ const Feeds = () => {
 
         </Card>
       </div>
+      
       <div className='border b-1 border-gray-400 w-full my-5'/>
       <div className='w-full flex flex-col gap-5 '>
       Post
       </div>
     </div>
-
-     
-   
       {/* right side  */}
       <div className='w-[26%] py-5 hidden md:block'>
         <div>
@@ -70,14 +70,15 @@ const Feeds = () => {
             <div className='text-xl'>JobSprint News</div>
             <div className='text-gray-600'>Latest updates and news from JobSprint</div>
             <div className='my-1'>
-              <div className='font-semibold text-md'>JobSprint launches new feature</div>
+              <div className='text-md'>JobSprint launches new feature</div>
               <div className='text-xs text-gray-400'>JobSprint has launched a new feature to help you connect with recruiters more easily.</div>
             </div>
             </Card>
         </div>
-
+       <div className='my-5 sticky top-19'>
+        <Advertisement/>
+       </div>
       </div>
-      
     </div>
   )
 }
