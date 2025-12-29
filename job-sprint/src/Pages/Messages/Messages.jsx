@@ -3,6 +3,8 @@ import React from 'react'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Conversation from '../../components/Conversation/Conversation';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ImageIcon from '@mui/icons-material/Image';
+import Advertisement from '../../components/Advertisement/Advertisement';
 
 const Messages = () => {
     return (
@@ -86,10 +88,31 @@ const Messages = () => {
 
                                     </div>
                                 </div>
+                                {/* Space for typing message */}
+                                <div className='p-2 w-full border-b border-gray-200 '>
+                                    <textarea rows={4} className='w-full bg-gray-300 rounded-xl p-3 outline-0 text-sm' placeholder='Type a message...'/>
+
+                                </div>
+                                <div className='p-3 flex justify-between'>
+                                    <div>
+                                        <label htmlFor='messageImage' className='cursor-pointer'><ImageIcon /></label>
+                                        <input type="file" id='messageImage' className='hidden' />
+                                    </div>
+                                    <div className='px-3 py-1 cursor-pointer rounded-2xl border bg-orange-900 text-white '>Send
+
+                                    </div>
+
+                                </div>
 
                             </div>
                         </div>
                     </Card>
+                </div>
+                <div className='hidden md:flex md:w-[25%]'>
+                    <div className='sticky top-19'>
+                        <Advertisement/>
+                    </div>
+
                 </div>
             </div>
         </div>
