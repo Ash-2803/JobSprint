@@ -10,6 +10,7 @@ import Signup from './Pages/SignUp/Signup'
 import SignIn from './Pages/Login/SignIn'
 import Navbar2 from './components/Navbar2/Navbar2'
 import Feeds from './Pages/Feed/Feeds'
+import Mynetwork from './Pages/Network/Mynetwork'
 
 function App() {
   const isLogin = true;
@@ -23,6 +24,7 @@ function App() {
       <Route path = '/signup' element={<Signup/>}/>
       <Route path = '/signin' element={<SignIn/>}/>
       <Route path='/feed' element={<Feeds/>}/>
+      <Route path='/mynetwork' element={<Mynetwork/>}/>
     </Routes>
     {/* <Footer/> */}
     </div>
