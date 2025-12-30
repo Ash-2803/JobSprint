@@ -7,7 +7,7 @@ import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import { useState } from 'react';
 
-const Post = () => {
+const Post = ({profile}) => {
     const [seeMore, setSeeMore] = useState(false);
     const [comment, setComment] = useState(false);
 
@@ -44,7 +44,8 @@ const Post = () => {
                     <div className='text-gray-500 text-sm'>30 Comments</div>
                 </div>
             </div>
-            <div className='flex p-1'>
+            {
+                !profile  && <div className='flex p-1'>
                 <div className=' border-r border-gray-100 w-1/3 justify-center flex cursor-pointer items-center gap-2 p-2 hover:bg-gray-100'><ThumbUpSharpIcon className="text-orange-300" />
                     <span className='text-sm'>Likes</span>
                 </div>
@@ -53,8 +54,9 @@ const Post = () => {
                 </div>
                 <div className=' border-r border-gray-100 w-1/3 justify-center flex cursor-pointer items-center gap-2 p-2 hover:bg-gray-100'><SendIcon className="text-black" />
                     <span className='text-sm'>Share</span>
-                </div>x
+                </div>
             </div>
+            }
             {/* Comment section */}
             {
                 comment && <div className='p-4 w-full'>
