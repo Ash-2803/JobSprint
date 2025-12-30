@@ -2,7 +2,7 @@ import React from 'react'
 
 const EditinfoModel = () => {
   return (
-    <div className='mt-8 w-full h-[350px] overflow-auto'>
+    <div className='mt-8 w-full h-87.5 overflow-auto'>
         <div className='w-full mb-4'>
             <label> Full Name*</label>
             <br />
