@@ -10,13 +10,33 @@ import { useState } from 'react';
 import Model from '../../components/Models/Model';
 import Imagemodel from '../../components/ImageModel/Imagemodel';
 import EditinfoModel from '../../components/EditinfoModel/EditinfoModel';
+import EditaboutModel from '../../components/EditAboutModel/EditaboutModel';
+import EditExperienceModel from '../../components/EditExperienceModel/EditExperienceModel';
+import EditmessageModel from '../../components/EditMessageModel/EditmessageModel';
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+
 
 const Profile = () => {
     const [imageSetModel, setImageSetModel] = useState(false);
     const [circularImage, setCircularImage] = useState(true);
-    const [infoModel, setInfoModel] = useState(false);
 
-    const handleinfoModel = ()=>{
+    const [infoModel, setInfoModel] = useState(false);
+    const [aboutInfoModel, setAboutInfoModel] = useState(false);
+    const [experienceModel, setexperienceModel] = useState(false)
+    const [messageModel,setmessageModel] = useState(false);
+
+    const handleMessageModel = ()=>{
+        setmessageModel(!messageModel)
+    }
+
+    const handleExperienceModel = ()=>{
+        setexperienceModel(!experienceModel)
+    }
+    const handleAboutInfoModel = () => {
+        setAboutInfoModel(!aboutInfoModel)
+    }
+
+    const handleinfoModel = () => {
         setInfoModel(!infoModel)
     }
     const handleImageModelOpenClose = () => {
@@ -59,7 +79,7 @@ const Profile = () => {
                                                 <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Logout</div>
                                             </div>
                                             <div className='my-5 flex gap-5'>
-                                                <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Message</div>
+                                                <div onClick={handleMessageModel} className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Message</div>
                                                 <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Connect</div>
 
                                             </div>
@@ -78,7 +98,7 @@ const Profile = () => {
                         <Card padding={1}>
                             <div className='flex justify-between items-center'>
                                 <div className=' text-xl '>About</div>
-                                <div><EditIcon className='text-gray-700 cursor-pointer' /></div>
+                                <div onClick={handleAboutInfoModel}><EditIcon className='text-gray-700 cursor-pointer' /></div>
                             </div>
                             <div className='text-gray-700 w-[80%] text-md'>
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit, soluta amet a nostrum doloribus provident voluptatibus facilis, debitis, nemo sequi! Numquam, impedit eligendi. Veniam voluptas eius soluta minima totam?
@@ -146,6 +166,10 @@ const Profile = () => {
 
 
                             </div>
+                            <div className='w-full flex justify-center items-center'>
+                                <div className='p-2 rounded-xl cursor-pointer hover:bg-gray-400'>Show All Posts <ArrowRightAltIcon/> </div>
+
+                            </div>
 
                         </Card>
 
@@ -154,7 +178,7 @@ const Profile = () => {
                         <Card padding={1}>
                             <div className='flex justify-between items-center'>
                                 <div className=' text-xl '>Experience</div>
-                                <div><AddIcon className="text-orange-600 cursor-pointer" /></div>
+                                <div onClick={handleExperienceModel}><AddIcon className="text-orange-600 cursor-pointer" /></div>
                             </div>
                             {/* Expereince details  */}
                             <div className='mt-5'>
@@ -196,14 +220,31 @@ const Profile = () => {
 
             </div>
             {
-                imageSetModel && <Model title = "Upload Image" closeModel={handleImageModelOpenClose} >
-                    <Imagemodel isCircular = {circularImage} />
+                imageSetModel && <Model title="Upload Image" closeModel={handleImageModelOpenClose} >
+                    <Imagemodel isCircular={circularImage} />
                 </Model>
             }
             {
-                infoModel && <Model title = "Edit Info" closeModel = {handleinfoModel} >
-                    <EditinfoModel/>
-                    </Model>
+                infoModel && <Model title="Edit Info" closeModel={handleinfoModel} >
+                    <EditinfoModel />
+                </Model>
+            }
+            {
+                aboutInfoModel && <Model title="Edit About" closeModel={handleAboutInfoModel}>
+                    <EditaboutModel />
+
+
+                </Model>
+            }
+            {
+                experienceModel && <Model title = "expereince" closeModel = {handleExperienceModel}>
+            <EditExperienceModel/>
+            </Model>
+            }
+            {
+             messageModel && <Model title = "expereince" closeModel = {handleMessageModel}>
+            <EditmessageModel/>
+            </Model>   
             }
         </div>
     )
