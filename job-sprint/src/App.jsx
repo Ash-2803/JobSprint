@@ -19,7 +19,7 @@ import SingleActivity from './Pages/SingleActivity/SingleActivity'
 import Notification from './Pages/Notification/Notification'
 
 function App() {
-  const isLogin = true;
+  const isLogin = false;
   const [count, setCount] = useState(0)
 
   return (

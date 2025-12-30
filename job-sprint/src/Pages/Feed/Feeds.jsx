@@ -10,6 +10,7 @@ import Advertisement from '../../components/Advertisement/Advertisement';
 import Post from '../../components/Posts/Post';
 import Model from '../../components/Models/Model';
 import Addmodel from '../../components/AddModel/Addmodel';
+import Loader from '../../components/Loader/Loader';
 
 
 const Feeds = () => {
@@ -93,6 +94,8 @@ const Feeds = () => {
       {addPostmodel && <Model closeModel = {handleOpenPostmodel} title="Add Post">
         <Addmodel />
       </Model>}
+
+      {/* <Loader/> */}
     </div>
   )
 }
