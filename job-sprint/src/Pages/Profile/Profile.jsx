@@ -20,7 +20,7 @@ import { useParams } from 'react-router-dom';
 
 const Profile = () => {
 
-    const {id} = useParams();
+    const { id } = useParams();
 
     const [imageSetModel, setImageSetModel] = useState(false);
     const [circularImage, setCircularImage] = useState(true);
@@ -28,13 +28,13 @@ const Profile = () => {
     const [infoModel, setInfoModel] = useState(false);
     const [aboutInfoModel, setAboutInfoModel] = useState(false);
     const [experienceModel, setexperienceModel] = useState(false)
-    const [messageModel,setmessageModel] = useState(false);
+    const [messageModel, setmessageModel] = useState(false);
 
-    const handleMessageModel = ()=>{
+    const handleMessageModel = () => {
         setmessageModel(!messageModel)
     }
 
-    const handleExperienceModel = ()=>{
+    const handleExperienceModel = () => {
         setexperienceModel(!experienceModel)
     }
     const handleAboutInfoModel = () => {
@@ -137,42 +137,22 @@ const Profile = () => {
                             <div className='cursor-pointer px-3 py-1 w-fit border rounded-4xl bg-purple-500 text-white font-semibold' >Posts</div>
                             {/* Parent div for scroll activity */}
                             <div className='overflow-x-auto my-2 flex gap-1 overflow-y-hidden w-full'>
-                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
+                                <Link to={`/profile/:${id}/activities/:111`} className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post profile={1} />
-                                </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
+                                </Link>
+                                <Link to={`/profile/:${id}/activities/:112`} className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post profile={1} />
-                                </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
+                                </Link>
+                                <Link to={`/profile/:${id}/activities/:113`} className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post profile={1} />
-                                </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
-
-                                    <Post />
-                                </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
-
-                                    <Post profile={1} />
-                                </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
-
-                                    <Post profile={1} />
-                                </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
-
-                                    <Post profile={1} />
-                                </div>
-
-
-
-
+                                </Link>
 
                             </div>
                             <div className='w-full flex justify-center items-center'>
-                                <Link to = {`/profile/${id}/activities`} className='p-2 rounded-xl cursor-pointer hover:bg-gray-400'>Show All Posts <ArrowRightAltIcon/> </Link>
+                                <Link to={`/profile/${id}/activities`} className='p-2 rounded-xl cursor-pointer hover:bg-gray-400'>Show All Posts <ArrowRightAltIcon /> </Link>
 
                             </div>
 
@@ -242,14 +222,14 @@ const Profile = () => {
                 </Model>
             }
             {
-                experienceModel && <Model title = "expereince" closeModel = {handleExperienceModel}>
-            <EditExperienceModel/>
-            </Model>
+                experienceModel && <Model title="expereince" closeModel={handleExperienceModel}>
+                    <EditExperienceModel />
+                </Model>
             }
             {
-             messageModel && <Model title = "expereince" closeModel = {handleMessageModel}>
-            <EditmessageModel/>
-            </Model>   
+                messageModel && <Model title="expereince" closeModel={handleMessageModel}>
+                    <EditmessageModel />
+                </Model>
             }
         </div>
     )

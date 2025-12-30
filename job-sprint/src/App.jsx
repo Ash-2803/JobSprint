@@ -15,6 +15,7 @@ import Resume from './Pages/Resume/Resume'
 import Messages from './Pages/Messages/Messages'
 import Profile from './Pages/Profile/Profile'
 import Allactivities from './Pages/AllActivities/Allactivities'
+import SingleActivity from './Pages/SingleActivity/SingleActivity'
 
 function App() {
   const isLogin = true;
@@ -33,6 +34,7 @@ function App() {
       <Route path='/messages' element={<Messages/>}/>
       <Route path='/profile/:id' element={<Profile/>}/>
       <Route path='/profile/:id/activities' element={<Allactivities/>}/>
+      <Route path='/profile/:id/activities/:postId' element={<SingleActivity/>}/>
 
     </Routes>
     {/* <Footer/> */}
