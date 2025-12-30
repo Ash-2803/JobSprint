@@ -14,6 +14,7 @@ import Mynetwork from './Pages/Network/Mynetwork'
 import Resume from './Pages/Resume/Resume'
 import Messages from './Pages/Messages/Messages'
 import Profile from './Pages/Profile/Profile'
+import Allactivities from './Pages/AllActivities/Allactivities'
 
 function App() {
   const isLogin = true;
@@ -31,6 +32,7 @@ function App() {
       <Route path='/resume' element={<Resume/>}/>
       <Route path='/messages' element={<Messages/>}/>
       <Route path='/profile/:id' element={<Profile/>}/>
+      <Route path='/profile/:id/activities' element={<Allactivities/>}/>
 
     </Routes>
     {/* <Footer/> */}

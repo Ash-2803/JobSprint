@@ -14,9 +14,14 @@ import EditaboutModel from '../../components/EditAboutModel/EditaboutModel';
 import EditExperienceModel from '../../components/EditExperienceModel/EditExperienceModel';
 import EditmessageModel from '../../components/EditMessageModel/EditmessageModel';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 const Profile = () => {
+
+    const {id} = useParams();
+
     const [imageSetModel, setImageSetModel] = useState(false);
     const [circularImage, setCircularImage] = useState(true);
 
@@ -132,31 +137,31 @@ const Profile = () => {
                             <div className='cursor-pointer px-3 py-1 w-fit border rounded-4xl bg-purple-500 text-white font-semibold' >Posts</div>
                             {/* Parent div for scroll activity */}
                             <div className='overflow-x-auto my-2 flex gap-1 overflow-y-hidden w-full'>
-                                <div className='shrink-0 cursor-pointer w-87.5 '>
+                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post profile={1} />
                                 </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 '>
+                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post profile={1} />
                                 </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 '>
+                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post profile={1} />
                                 </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 '>
+                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post />
                                 </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 '>
+                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post profile={1} />
                                 </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 '>
+                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post profile={1} />
                                 </div>
-                                <div className='shrink-0 cursor-pointer w-87.5 '>
+                                <div className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
                                     <Post profile={1} />
                                 </div>
@@ -167,7 +172,7 @@ const Profile = () => {
 
                             </div>
                             <div className='w-full flex justify-center items-center'>
-                                <div className='p-2 rounded-xl cursor-pointer hover:bg-gray-400'>Show All Posts <ArrowRightAltIcon/> </div>
+                                <Link to = {`/profile/${id}/activities`} className='p-2 rounded-xl cursor-pointer hover:bg-gray-400'>Show All Posts <ArrowRightAltIcon/> </Link>
 
                             </div>
 
