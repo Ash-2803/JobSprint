@@ -16,6 +16,7 @@ import Messages from './Pages/Messages/Messages'
 import Profile from './Pages/Profile/Profile'
 import Allactivities from './Pages/AllActivities/Allactivities'
 import SingleActivity from './Pages/SingleActivity/SingleActivity'
+import Notification from './Pages/Notification/Notification'
 
 function App() {
   const isLogin = true;
@@ -32,6 +33,7 @@ function App() {
       <Route path='/mynetwork' element={<Mynetwork/>}/>
       <Route path='/resume' element={<Resume/>}/>
       <Route path='/messages' element={<Messages/>}/>
+      <Route path='/notification' element={<Notification/>}/>
       <Route path='/profile/:id' element={<Profile/>}/>
       <Route path='/profile/:id/activities' element={<Allactivities/>}/>
       <Route path='/profile/:id/activities/:postId' element={<SingleActivity/>}/>
