@@ -17,7 +17,7 @@ const Navbar2 = () => {
     return (
         <div className='bg-white h-13 flex justify-between py-1 xl: px-50 fixed top-0 w-full z-1000 '>
             <div className=' flex gap-2 items-center '>
-                <div><img src={"https://images-platform.99static.com//x43DEvYF24dPa-bBzpxj5NL93ZY=/199x174:1839x1814/fit-in/500x500/99designs-contests-attachments/77/77692/attachment_77692903"} alt="Job Sprint logo" className='w-12 h-12' /></div>
+                <Link to = "/feed"><img src={"https://images-platform.99static.com//x43DEvYF24dPa-bBzpxj5NL93ZY=/199x174:1839x1814/fit-in/500x500/99designs-contests-attachments/77/77692/attachment_77692903"} alt="Job Sprint logo" className='w-12 h-12' /></Link>
                 <div className='relative'>
                     <input type="searchInput" placeholder='Search jobs, skills, companies' className='searchInput border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400 w-48 md:w-64 lg:w-80' />
                     {
@@ -37,7 +37,7 @@ const Navbar2 = () => {
 
             </div>
             <div className=' hidden gap-10 md:flex '>
-                <Link className=' flex flex-col items-center cursor-pointer'>
+                <Link to="/feed" className=' flex flex-col items-center cursor-pointer'>
                     <AddHomeIcon sx={{ color: location.pathname === "/feed" ? "black" : "gray" }} />
                     <div className = {`text-sm text-gray-500 ${location.pathname === "/feed" ? "border-b-3" : ""}`}>Home
                     </div>
@@ -67,12 +67,12 @@ const Navbar2 = () => {
                     <div className={`text-sm text-gray-500 ${location.pathname === "/notifications" ? "border-b-3" : ""}`}>Notifications
                     </div>
                 </div>
-                <div className=' flex flex-col items-center cursor-pointer'>
+                <Link to = {`/profile/ok`} className=' flex flex-col items-center cursor-pointer'>
                     <img className="w-6 h-6 rounded-full object-cover" src={MyImage} alt="My Image" />
                     <div className='text-sm text-gray-500'>Me
                     </div>
 
-                </div>
+                </Link>
 
             </div>
         </div>
