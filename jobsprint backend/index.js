@@ -1,6 +1,9 @@
-const express = require("express")
+const express = require("express");
+const { default: mongoose } = require("mongoose");
 const app = express();
 const port = 3000
+
+require("./connection.js")
 
 app.get("/", (req,res)=>{
    res.send({
