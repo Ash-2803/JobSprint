@@ -54,7 +54,7 @@ exports.loginThroughGmail = async (req, res) => {
 exports.register = async (req, res) => {
   try {
     // console.log(req.body)
-    const { emailId, password, userName } = req.body;
+    const { emailId, password,confirm_password, userName } = req.body;
     const userExist = await User.findOne({ emailId });
     if (userExist) {
       return res.status(400).json({
@@ -62,14 +62,19 @@ exports.register = async (req, res) => {
           "Already have an account with thie email , Please try with other email ",
       });
     }
+
+    if(password !== confirm_password){
+      return res.status(400).json({error:"Please fill the correct password"})
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
-    // console.log(hashedPassword)
     const newUser = new User({ emailId, password: hashedPassword, userName });
     await newUser.save();
 
+    newUser.password = undefined;
+
     return res.status(200).json({
       message: "User Registered Successfully",
-      success: "yes",
+      success: true,
       data: newUser,
     });
   } catch (err) {
