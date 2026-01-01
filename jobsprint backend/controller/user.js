@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const cookiesOptions = {
-  httpOnly : true,
-  secure : false, // set to true in production
-  sameSite : "Lax" // set  to None in production
-}
+  httpOnly: true,
+  secure: false, // set to true in production
+  sameSite: "Lax", // set  to None in production
+};
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Login through the Google Auth
@@ -35,9 +35,12 @@ exports.loginThroughGmail = async (req, res) => {
         profilePic: picture,
       });
     }
-    const jwttoken = jwt.sign({userId : userExist._id}, process.env.JWT_PRIVATE_KEY);
+    const jwttoken = jwt.sign(
+      { userId: userExist._id },
+      process.env.JWT_PRIVATE_KEY
+    );
     // console.log(token)
-    res.cookie('token',jwttoken,cookiesOptions)
+    res.cookie("token", jwttoken, cookiesOptions);
 
     return res.status(200).json({ user: userExist });
   } catch (err) {
@@ -46,7 +49,7 @@ exports.loginThroughGmail = async (req, res) => {
   }
 };
 
-// Register the user 
+// Register the user
 
 exports.register = async (req, res) => {
   try {
@@ -70,7 +73,7 @@ exports.register = async (req, res) => {
       data: newUser,
     });
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     res.status(500).json({ error: "Server Error", message: err.message });
   }
 };
@@ -86,9 +89,12 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: "Invalid Email or password" });
     }
     const isMatch = await bcrypt.compare(password, userExist.password);
-    const token = jwt.sign({userId : userExist._id}, process.env.JWT_PRIVATE_KEY);
+    const token = jwt.sign(
+      { userId: userExist._id },
+      process.env.JWT_PRIVATE_KEY
+    );
     // console.log(token)
-    res.cookie('token',token,cookiesOptions)
+    res.cookie("token", token, cookiesOptions);
     if (!isMatch) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
@@ -102,3 +108,44 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: "Server Error", message: err.message });
   }
 };
+
+exports.updateUser = async (req, res) => {
+  try {
+    const { user } = req.body;
+    const userExist = await User.findById(req.user._id);
+    if (!userExist) {
+      return res.status(400).json({ error: "User Does not exist" });
+    }
+    const updateData = await User.findByIdAndUpdate(userExist._id, user);
+    // console.log(updateData)
+    const userData = await User.findById(req.user._id);
+    return res.status(200).json({
+      message: "User Updated Successfully",
+      user: userData,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server Error", message: err.message });
+  }
+};
+
+exports.getProfileById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userExist = await User.findById(id);
+    if (!userExist) {
+      return res.status(400).json({ error: "No such user exist" });
+    }
+    return res.status(200).json({
+      message: "User fetched Successfully",
+      user: userExist,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server Error", message: err.message });
+  }
+};
+
+exports.logout = async (req, res) => {
+  res.clearCookie('token',cookiesOptions).json({message:"Logged out successfully"})
+}
