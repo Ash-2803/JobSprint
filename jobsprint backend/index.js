@@ -12,8 +12,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 const UserRoute = require('./Routes/user.js')
+const PortRoute = require('./Routes/post.js')
 
 app.use(`/api/auth`,UserRoute)
+app.use("/api/post",PortRoute)
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port http://localhost:`, PORT);
