@@ -1,5 +1,5 @@
 const notificationModel = require("../models/notification");
-const { notification } = require("../Routes/notification");
+// const { notification } = require("../Routes/notification");
 
 // Get the Notifications
 
