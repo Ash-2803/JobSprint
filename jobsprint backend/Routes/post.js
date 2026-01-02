@@ -11,15 +11,4 @@ router.get('/getTop5Post/:userId',postController.getTop5PostForUser)
 router.get('/getAllPostForUser/:userId',postController.getAllPostForUser)
 
 
-
-
-
-
-
-
-
-
-
-
-
 module.exports = router;

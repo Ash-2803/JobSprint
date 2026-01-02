@@ -13,9 +13,11 @@ app.use(cookieParser());
 
 const UserRoute = require('./Routes/user.js')
 const PortRoute = require('./Routes/post.js')
+const NotificationRoute = require('./Routes/notification.js')
 
 app.use(`/api/auth`,UserRoute)
 app.use("/api/post",PortRoute)
+app.use("/api/notification",NotificationRoute)
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port http://localhost:`, PORT);
