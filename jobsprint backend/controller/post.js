@@ -94,3 +94,35 @@ exports.getPostByIdpostId = async (req, res) => {
     res.status(500).json({ error: "Server Error", message: err.message });
   }
 };
+// Get top 5 post
+
+exports.getTop5PostForUser = async(req,res)=>{
+  try{
+    const {userId} = req.params;
+    const posts = await postModel.find({user : userId}).sort({createdAt : -1}).populate('user','-password').limit(5)
+    res.status(200).json({
+      message: "Post Found",
+      posts: posts,
+    });
+
+  }catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server Error", message: err.message });
+  }
+}
+// Get all the post for user using user id
+
+exports.getAllPostForUser = async(req,res)=>{
+  try{
+    const {userId} = req.params;
+    const posts = await postModel.find({user : userId}).sort({createdAt : -1}).populate('user','-password')
+    res.status(200).json({
+      message: "Post Found",
+      posts: posts,
+    });
+
+  }catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server Error", message: err.message });
+  }
+}
