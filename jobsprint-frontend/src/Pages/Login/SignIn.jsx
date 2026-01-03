@@ -1,9 +1,35 @@
 import { GoogleLogin } from '@react-oauth/google'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link , useNavigate } from 'react-router-dom'
 import Googlelogincomponent from '../../components/GoogleLogin/Googlelogincomponent'
+import { ToastContainer, toast } from 'react-toastify'
+import axios from 'axios';
 
-const SignIn = () => {
+const SignIn = (props) => {
+
+    const navigate = useNavigate();
+    const [loginField, setloginField] = useState({ emailId: "", password: "" })
+
+    const onChangeInput = (event, key) => {
+        setloginField({ ...loginField, [key]: event.target.value })
+    }
+
+    const handleLogn = async () => {
+        if (loginField.emailId.trim().length === 0 || loginField.password.trim().length === 0) {
+            return toast.error("Please fill the credentials")
+        }
+        await axios.post('http://localhost:3000/api/auth/login', loginField, { withCredentials: true }).then((res) => {
+
+            props.changeLoginValue(true)
+            localStorage.setItem('isLogin' , 'true')
+            localStorage.setItem('userInfo', JSON.stringify(res.data.user))
+
+            navigate('/feed')
+        }).catch((err) => {
+            console.log(err)
+            toast.error(err?.response?.data?.error)
+        })
+    }
     return (
 
         <div className='w-full flex flex-col items-center justify-center box-border my-10'>
@@ -21,16 +47,17 @@ const SignIn = () => {
                 <div className='flex flex-col gap-4'>
                     <div>
                         <label htmlFor="email">Email</label>
-                        <input type="email" className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Enter your email' />
+                        <input type="email" value={loginField.emailId} onChange={(e) => { onChangeInput(e, 'emailId') }} className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Enter your email' />
                         <label htmlFor="password">Password</label>
-                        <input type="password" className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Enter your password' />
+                        <input type="password" value={loginField.password} onChange={(e) => { onChangeInput(e, 'password') }} className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Enter your password' />
                         <div className='mt-4'>
-                            <button className='w-full bg-orange-400 text-white py-3 rounded-md hover:bg-orange-500 cursor-pointer'>Sign In</button>
+                            <button onClick={handleLogn} className='w-full bg-orange-400 text-white py-3 rounded-md hover:bg-orange-500 cursor-pointer'>Sign In</button>
                         </div>
                     </div>
                 </div>
             </div>
             <p className='mt-4 mb-10'>Don't have an account? <Link to={"/signup"} className='text-orange-500 cursor-pointer hover:underline'>Sign Up</Link></p>
+            <ToastContainer />
         </div>
     )
 }

@@ -13,7 +13,7 @@ import Addmodel from '../../components/AddModel/Addmodel';
 import Loader from '../../components/Loader/Loader';
 
 
-const Feeds = () => {
+const Feed = () => {
 
   const [addPostmodel, setAddPostmodel] = useState(false);
   const handleOpenPostmodel = () => {
@@ -100,4 +100,4 @@ const Feeds = () => {
   )
 }
 
-export default Feeds
+export default Feed
