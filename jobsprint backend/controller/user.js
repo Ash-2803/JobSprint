@@ -23,20 +23,21 @@ exports.loginThroughGmail = async (req, res) => {
     });
 
     const payload = ticket.getPayload();
+    
+    const { sub, email , name, picture } = payload;
+  
 
-    const { sub, emailID, name, picture } = payload;
-
-    const userExist = await User.findOne({ email });
+    let userExist = await User.findOne({ email });
 
     if (!userExist) {
       userExist = await User.create({
         googleId: sub,
-        emailId,
+        emailId:email,
         userName: name,
         profilePic: picture,
       });
     }
-    const jwttoken = jwt.sign(
+    let jwttoken = jwt.sign(
       { userId: userExist._id },
       process.env.JWT_PRIVATE_KEY
     );
