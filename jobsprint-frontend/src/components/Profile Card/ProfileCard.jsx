@@ -1,24 +1,26 @@
 import React from 'react'
 import Card from '../Card/Card'
 import MyImage from "../../assets/My_image.jpeg";
+import { data } from 'react-router-dom';
 
-const ProfileCard = () => {
+const ProfileCard = (props) => {
+// console.log(props)
     return (
         <Card padding={0}>
             <div className='relative h-25'>
                 <div className=' relative w-full h-22 rounded-md'>
-                    <img src="https://media.istockphoto.com/id/944812540/photo/mountain-landscape-ponta-delgada-island-azores.jpg?s=612x612&w=0&k=20&c=mbS8X4gtJki3gGDjfC0sG3rsz7D0nls53a0b4OPXLnE=" className='rounded-t-md h-full w-full' alt="LandScape Image" />
+                    <img src={props.data?.coverPic} className='rounded-t-md h-full w-full' alt="LandScape Image" />
                 </div>
                 <div className='absolute top-15 left-12 z-10'>
-                    <img src={MyImage} className="rounded-full border-2 h-15 w-15 border-white cursor-pointer object-cover" alt="My Image" />
+                    <img src={props?.data?.profilePic} className="rounded-full border-2 h-15 w-15 border-white cursor-pointer object-cover" alt="My Image" />
                 </div>
             </div>
             <div className='p-5 '>
-        <div className='text-sm my-1'>Ayush Tyagi</div>
-        <div className='text-sm my-1'>Software Engineer</div>
-        <div className='text-sm my-1'>New Delhi, India</div>
-        <div className='text-sm my-1'>Excitel Broadband</div>
-            </div>
+        <div className='text-sm my-1'>{props?.data?.userName}</div>
+        <div className='text-sm my-1'>{props?.data?.headline}</div>
+        <div className='text-sm my-1'>{props?.data?.curr_location}</div>
+        <div className='text-sm my-1'>{props?.data?.curr_company}</div>
+            </div>  
         </Card>
     )
 }

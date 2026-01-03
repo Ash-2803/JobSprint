@@ -14,7 +14,7 @@ const Googlelogincomponent = (props) => {
         // console.log(res)
         localStorage.setItem('isLogin', 'true');
         localStorage.setItem('userInfo', JSON.stringify(res.data.user))
-        props.changeLoginValue();
+        props.changeLoginValue(true);
         navigate('/feed')
     }
     return (

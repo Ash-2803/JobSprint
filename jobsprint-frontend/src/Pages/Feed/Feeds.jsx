@@ -1,5 +1,5 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { use } from 'react'
+import { useState, useEffect } from 'react'
 import Card from '../../components/Card/Card'
 import ProfileCard from '../../components/Profile Card/ProfileCard'
 import MyImage from "../../assets/My_image.jpeg";
@@ -11,11 +11,49 @@ import Post from '../../components/Posts/Post';
 import Model from '../../components/Models/Model';
 import Addmodel from '../../components/AddModel/Addmodel';
 import Loader from '../../components/Loader/Loader';
-
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Feed = () => {
 
+  const [personalData, setpersonalData] = useState(null)
+
+  const [post, setPost] = useState([])
+
   const [addPostmodel, setAddPostmodel] = useState(false);
+  // const fetchSelfData = async()=>{
+  //   await axios.get('http://localhost:3000/api/auth/self' , {withCredentials: true}).then(res=>{
+  //     setpersonalData(res.data.user)
+  //   }).catch(err=>{
+  //     console.log("API Error", err)
+  //     toast.error(err?.response?.data?.error)
+  //   })
+  // }
+  const fetchData = async () => {
+    try {
+      const [userData, postData] = await Promise.all([
+        axios.get('http://localhost:3000/api/auth/self', { withCredentials: true }),
+        axios.get('http://localhost:3000/api/post/getAllpost'),
+      ]);
+
+      setpersonalData(userData.data.user)
+      localStorage.setItem('userInfo', JSON.stringify(userData.data.user))
+      setPost(postData.data.posts)
+
+
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.error)
+    }
+  };
+
+  useEffect(() => {
+
+    fetchData();
+  }, []);
+
+
+
   const handleOpenPostmodel = () => {
     setAddPostmodel(false);
   }
@@ -24,7 +62,7 @@ const Feed = () => {
       {/* left side  */}
       <div className=' w-[21%] sm:block sm:w-[23%] hidden py-5'>
         <div className='h-fit'>
-          <ProfileCard />
+          <ProfileCard data={personalData} />
         </div>
         <div className='w-full my-5'>
           <Card padding={1}>
@@ -47,7 +85,7 @@ const Feed = () => {
         <div>
           <Card padding={1}>
             <div className='flex gap-2 items-center'>
-              <img src={MyImage} alt="My Image" className='rounded-full w-15 h-15 border-2 border-white cursor-pointer' />
+              <img src={personalData?.profilePic} alt="My Image" className='rounded-full w-15 h-15 border-2 border-white cursor-pointer' />
               <div onClick={() => setAddPostmodel(true)} className='w-full border py-3 px-3 rounded-3xl cursor-pointer hover:bg-gray-100'>Post Something</div>
             </div>
             <div className='w-full flex mt-3'>
@@ -70,9 +108,11 @@ const Feed = () => {
 
         <div className='border b-1 border-gray-400 w-full my-5' />
         <div className='w-full flex flex-col gap-5 '>
-          <Post />
-          <Post />
-          <Post />
+          {
+            post.map((item, index) => {
+              return <Post item = {item} key = {index} personalData = {personalData} />
+            })
+          }
         </div>
       </div>
       {/* right side  */}
@@ -91,11 +131,12 @@ const Feed = () => {
           <Advertisement />
         </div>
       </div>
-      {addPostmodel && <Model closeModel = {handleOpenPostmodel} title="Add Post">
-        <Addmodel />
+      {addPostmodel && <Model closeModel={handleOpenPostmodel} title="Add Post">
+        <Addmodel personalData = {personalData} />
       </Model>}
 
       {/* <Loader/> */}
+      <ToastContainer />
     </div>
   )
 }

@@ -7,41 +7,43 @@ import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import { useState } from 'react';
 
-const Post = ({profile}) => {
+const Post = ({profile , item  , personalData}) => {
     const [seeMore, setSeeMore] = useState(false);
     const [comment, setComment] = useState(false);
 
-    const desc = `Hello How are you all! 👋`
+    const desc = item?.desc
     const handleSendcomment = (e) => {
         e.preventDefault();
         // Logic to send comment
     }
+console.log(item)
+
     return (
         <Card padding={0}>
             <div className='flex flex-col gap-3 p-4 '>
                 <div className='w-12 h-12 rounded-4xl'>
-                    <img className='rounded-4xl cursor-pointer w-12 h-12 border-white border-2' src={MyImage} alt="My Image" />
+                    <img className='rounded-4xl cursor-pointer w-12 h-12 border-white border-2' src={item?.user?.profilePic} alt="My Image" />
                 </div>
                 <div>
-                    <div className='text-lg font-semibold'>Ash</div>
-                    <div className='text-sm text-gray-500'>Software Engineer | New Delhi, India</div>
+                    <div className='text-lg font-semibold'>{item?.user?.UserName}</div>
+                    <div className='text-sm text-gray-500'>{item?.user?.headline}</div>
                 </div>
             </div>
             <div className='text-md p-4 my-3 whitespace-pre-line grow'>
-                {seeMore ? desc : `${desc.slice(0, 5)}`}<span onClick={() => setSeeMore(!seeMore)} className='text-orange-600 cursor-pointer'>
+                {seeMore ? desc : `${desc.slice(0, 5)}`}{desc.length<100?null:<span onClick={() => setSeeMore(!seeMore)} className='text-orange-600 cursor-pointer'>
                     {seeMore ? ' Show Less' : '... See More'}
-                </span>
+                </span>}
             </div>
             <div className='w-full h-full'>
-                <img src="https://media.istockphoto.com/id/944812540/photo/mountain-landscape-ponta-delgada-island-azores.jpg?s=612x612&w=0&k=20&c=mbS8X4gtJki3gGDjfC0sG3rsz7D0nls53a0b4OPXLnE=" className='w-full h-auto' alt="Post Image" />
+                <img src={item?.image_link} className='w-full h-auto' alt="Post Image" />
             </div>
             <div className='my-2 p-4 flex justify-between items-center'>
                 <div className='flex items-center gap-1'>
                     <ThumbUpSharpIcon className='text-orange-600' />
-                    <div>Likes 120</div>
+                    <div>{item?.likes.length}Likes</div>
                 </div>
                 <div className='flex items-center gap-1'>
-                    <div className='text-gray-500 text-sm'>30 Comments</div>
+                    <div className='text-gray-500 text-sm'>{item?.comments} Comments</div>
                 </div>
             </div>
             {

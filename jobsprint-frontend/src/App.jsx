@@ -42,14 +42,14 @@ function App() {
       <Route path='/' element={isLogin?<Navigate to ={'/feed'}/>:<LandingPage changeLoginValue = {changeLoginValue}/>}/>
       <Route path = '/signup' element={isLogin?<Navigate to ={'/feed'}/>:<Signup changeLoginValue = {changeLoginValue}/>}/>
       <Route path = '/signin' element={isLogin?<Navigate to ={'/feed'}/>:<SignIn changeLoginValue = {changeLoginValue} />}/>
-      <Route path='/feed' element={<Feeds/>}/>
-      <Route path='/mynetwork' element={<Mynetwork/>}/>
-      <Route path='/resume' element={<Resume/>}/>
-      <Route path='/messages' element={<Messages/>}/>
-      <Route path='/notification' element={<Notification/>}/>
-      <Route path='/profile/:id' element={<Profile/>}/>
-      <Route path='/profile/:id/activities' element={<Allactivities/>}/>
-      <Route path='/profile/:id/activities/:postId' element={<SingleActivity/>}/>
+      <Route path='/feed' element={isLogin?<Feeds/> : <Navigate to ={'/signin'}/>}/>
+      <Route path='/mynetwork' element={isLogin?<Mynetwork/> : <Navigate to ={'/signin'}/>}/>
+      <Route path='/resume' element={isLogin?<Resume/> : <Navigate to ={'/signin'}/>}/>
+      <Route path='/messages' element={isLogin?<Messages/> : <Navigate to ={'/signin'}/>}/>
+      <Route path='/notification' element={isLogin?<Notification/> : <Navigate to ={'/signin'}/>}/>
+      <Route path='/profile/:id' element={isLogin?<Profile/> : <Navigate to ={'/signin'}/>} />
+      <Route path='/profile/:id/activities' element={isLogin?<Allactivities/> : <Navigate to ={'/signin'}/>}/>
+      <Route path='/profile/:id/activities/:postId' element={isLogin?<SingleActivity/> : <Navigate to ={'/signin'}/>}/>
 
     </Routes>
     {/* <Footer/> */}
