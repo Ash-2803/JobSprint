@@ -39,8 +39,8 @@ function App() {
     <div className='bg-gray-100 w-full h-full box-border'>
     {isLogin ? <Navbar2/> : <Navbar1/>}
     <Routes>
-      <Route path='/' element={isLogin?<Navigate to ={'/feed'}/>:<LandingPage/>}/>
-      <Route path = '/signup' element={isLogin?<Navigate to ={'/feed'}/>:<Signup/>}/>
+      <Route path='/' element={isLogin?<Navigate to ={'/feed'}/>:<LandingPage changeLoginValue = {changeLoginValue}/>}/>
+      <Route path = '/signup' element={isLogin?<Navigate to ={'/feed'}/>:<Signup changeLoginValue = {changeLoginValue}/>}/>
       <Route path = '/signin' element={isLogin?<Navigate to ={'/feed'}/>:<SignIn changeLoginValue = {changeLoginValue} />}/>
       <Route path='/feed' element={<Feeds/>}/>
       <Route path='/mynetwork' element={<Mynetwork/>}/>

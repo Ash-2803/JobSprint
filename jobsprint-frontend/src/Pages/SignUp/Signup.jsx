@@ -4,7 +4,7 @@ import Googlelogincomponent from '../../components/GoogleLogin/Googlelogincompon
 import { ToastContainer, toast } from 'react-toastify'
 import axios from 'axios'
 
-const Signup = () => {
+const Signup = (props) => {
 
     const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ const Signup = () => {
                     <div className='w-full h-px bg-gray-300'></div>
                 </div>
                 <div className="w-full mb-4">
-                    <Googlelogincomponent />
+                    <Googlelogincomponent changeLoginValue = {props.changeLoginValue} />
 
                 </div>
                 <div className='mt-4'>

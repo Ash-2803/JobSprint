@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Googlelogincomponent from '../../components/GoogleLogin/Googlelogincomponent'
-const LandingPage = () => {
+const LandingPage = (props) => {
     return (
         <div className='my-4 py-12.5 md:pl-30 px-5 md:flex justify-between'>
             <div className='md:w-[50%]'>
                 <h1 className='text-4xl font-bold'>Welcome to JobSprint</h1>
                 <p className='mt-4 text-lg'>Find your dream job with our platform</p>
                 <div className="w-[70%] mx-auto">
-                    <Googlelogincomponent/>
+                    <Googlelogincomponent changeLoginValue = {props.changeLoginValue}/>
                 </div>
                 <Link to = {"/signin"} className='flex mx-auto mt-2 py-2 px-2 bg-white gap-2 rounded-3xl items-center w-[70%] justify-center text-black hover:bg-gray-100 cursor-pointer'>
                     Sign in with Email
