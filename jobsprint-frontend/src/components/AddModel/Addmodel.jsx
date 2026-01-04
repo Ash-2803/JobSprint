@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import MyImage from "../../assets/My_image.jpeg";
 import ImageIcon from '@mui/icons-material/Image';
 import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
 
 const Addmodel = (props) => {
 
@@ -11,6 +12,35 @@ const Addmodel = (props) => {
     const handlePost = async () => {
         if (desc.trim().length === 0 & !imageUrl) return toast.error("Please enter any fiend")
 
+        await axios.post('http://localhost:3000/api/post', { desc: desc, image_link: imageUrl }, { withCredentials: true }).then(res => {
+            window.location.reload();
+
+        }).catch(err => {
+            toast.error(err?.response?.data?.error)
+        })
+
+    }
+
+    // cloudname - dy3xjpdri
+    // presetname - jobsprint
+    // CLOUDINARY_URL=cloudinary://<your_api_key>:<your_api_secret>@dy3xjpdri
+
+    const handleUploadImage = async (e) => {
+        const files = e.target.files
+        const data = new FormData();
+        data.append('file', files[0])
+
+        data.append('upload_preset', 'jobsprint')
+        try {
+
+            const response = await axios.post('https://api.cloudinary.com/v1_1/dy3xjpdri/image/upload', data)
+            const imageUrl = response.data.url;
+            setimageUrl(imageUrl);
+
+        } catch (err) {
+            console.log(err)
+
+        }
     }
 
     return (
@@ -26,13 +56,13 @@ const Addmodel = (props) => {
             </div>
             {
                 imageUrl && <div className='flex justify-between items-center'>
-                    <img src={MyImage} alt="My Image" className='w-15 h-15 rounded-xl' />
+                    <img src={imageUrl} alt="My Image" className='w-15 h-15 rounded-xl' />
 
                 </div>
             }
             <div className='flex justify-between'>
                 <div className='cursor-pointer' htmlFor="inputfile">
-                    <input type="file" id="inputfile" className='hidden' />
+                    <input onChange={handleUploadImage} type="file" id="inputfile" className='hidden' />
                     <label htmlFor="inputfile"><ImageIcon /></label>
                 </div>
                 <div>

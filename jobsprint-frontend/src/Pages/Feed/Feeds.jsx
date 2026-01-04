@@ -21,14 +21,6 @@ const Feed = () => {
   const [post, setPost] = useState([])
 
   const [addPostmodel, setAddPostmodel] = useState(false);
-  // const fetchSelfData = async()=>{
-  //   await axios.get('http://localhost:3000/api/auth/self' , {withCredentials: true}).then(res=>{
-  //     setpersonalData(res.data.user)
-  //   }).catch(err=>{
-  //     console.log("API Error", err)
-  //     toast.error(err?.response?.data?.error)
-  //   })
-  // }
   const fetchData = async () => {
     try {
       const [userData, postData] = await Promise.all([
