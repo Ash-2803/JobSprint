@@ -60,7 +60,7 @@ exports.getCommentByPostId = async (req, res) => {
     const comments = await commentModel.find({post : postId}).sort({createdAt : -1}).populate('user','userName headline profilePic')
     return res.status(200).json({
       message: "Comment fetched",
-      comment: comments,
+      comments: comments,
     });
 
   } catch (err) {
