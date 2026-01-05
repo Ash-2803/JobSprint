@@ -17,6 +17,7 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const Profile = () => {
@@ -45,7 +46,7 @@ const Profile = () => {
 
     useEffect(() => {
         fecthDataOnLoad()
-    }, [])
+    }, [id])
 
     const fecthDataOnLoad = async () => {
         try {
@@ -77,7 +78,7 @@ const Profile = () => {
 
     const handleExperienceModel = () => {
         if (experienceModel) {
-            setexperienceModel({clicked : "",id: "",datas:{}})
+            setexperienceModel({ clicked: "", id: "", datas: {} })
         }
         setexperienceModel(!experienceModel)
 
@@ -112,6 +113,74 @@ const Profile = () => {
 
     }
 
+    const amIFriend = () => {
+        let arr = userData?.friends?.filter((item) => { return item === ownData?._id })
+        return arr?.length;
+    }
+
+    const isInPendingList = () => {
+        let arr = userData?.pending_friends?.filter((item) => { return item === ownData?._id })
+        return arr?.length;
+    }
+
+    const inInSelfPendingList = () => {
+        let arr = ownData?.pending_friends?.filter((item) => { return item === userData?._id })
+        return arr?.length;
+    }
+
+    const checkFriendStatus = () => {
+        if (amIFriend()) {
+            return "Disconnect"
+        } else if (inInSelfPendingList()) {
+            return "Approve Request"
+        } else if (isInPendingList()) {
+            return "Request Sent"
+        } else {
+            return "Connect"
+        }
+    }
+
+    const handleSendFriendRequest = async () => {
+        if (checkFriendStatus() === "Request Sent") return
+
+        if (checkFriendStatus() === "Connect") {
+            await axios.post(`http://localhost:3000/api/auth/sendFriendRequest`, { receiver: userData?._id }, { withCredentials: true }).then(res => {
+                toast.success(res.data.message)
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }).catch(err => {
+                console.log(err);
+                alert("Something went wrong")
+                toast.error(err?.response?.data?.error)
+            })
+        }else if (checkFriendStatus() === "Approve Request"){
+            await axios.post(`http://localhost:3000/api/auth/acceptFriendRequest`, { friendId: userData?._id }, { withCredentials: true }).then(res => {
+                toast.success(res.data.message)
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }).catch(err => {
+                console.log(err);
+                alert("Something went wrong")
+                toast.error(err?.response?.data?.error)
+            })
+        }else {
+            await axios.delete(`http://localhost:3000/api/auth/removeFromFriendList/${userData?._id}`, {withCredentials:true}).then(res=>{
+                toast.success(res.data.message)
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
+            }).catch(err => {
+                console.log(err);
+                alert("Something went wrong")
+                toast.error(err?.response?.data?.error)
+            })
+        }
+
+    }
+
     return (
         <div className='px-5 xl:px-50 py-5  pt-12 flex flex-col gap-5 w-full mt-5 bg-gray-100'>
             <div className='flex justify-between'>
@@ -121,14 +190,19 @@ const Profile = () => {
                         <Card padding={0}>
                             <div className='w-full h-fit'>
                                 <div className='relative w-full h-50'>
-                                    <div className='absolute cursor-pointer top-3 right-3 z-20 w-8.75 flex justify-center items-center h-8.5 rounded-full p-3 bg-white ' onClick={handleonEditCover}><EditIcon className='text-gray-700' /></div>
+                                    {
+                                        userData?._id === ownData?._id && <div className='absolute cursor-pointer top-3 right-3 z-20 w-8.75 flex justify-center items-center h-8.5 rounded-full p-3 bg-white ' onClick={handleonEditCover}><EditIcon className='text-gray-700' /></div>
+                                    }
+
 
                                     <img className='w-full h-50 rounded-tr-lg rounded-t-lg' src={userData?.coverPic} alt="LandScape Image" />
                                     <div onClick={handleCircularImageOpen} className='absolute object-cover top-24 z-10 left-6'><img className="rounded-full border-2 border-white cursor-pointer w-35 h-35" src={userData?.profilePic} alt="Oggy" /></div>
 
                                 </div>
                                 <div className='mt-10 relative px-8 py-2'>
-                                    <div className='absolute cursor-pointer top-3 right-3 z-20 w-8.75 flex justify-center items-center h-8.5 rounded-full p-3 bg-white ' onClick={handleinfoModel} ><EditIcon className='text-gray-700' /></div>
+                                    {
+                                        userData?._id === ownData?._id && <div className='absolute cursor-pointer top-3 right-3 z-20 w-8.75 flex justify-center items-center h-8.5 rounded-full p-3 bg-white ' onClick={handleinfoModel} ><EditIcon className='text-gray-700' /></div>
+                                    }
                                     <div className='w-full'>
                                         <div className='text-2xl font-bold'>{userData?.userName}</div>
                                         <div className='text-gray-700'>{userData?.headline}</div>
@@ -138,11 +212,15 @@ const Profile = () => {
                                             <div className='my-5 flex gap-5'>
                                                 <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Open to</div>
                                                 <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Share Profile</div>
-                                                <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Logout</div>
+                                                {
+                                                    userData?._id === ownData?._id && <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Logout</div>
+                                                }
                                             </div>
                                             <div className='my-5 flex gap-5'>
-                                                <div onClick={handleMessageModel} className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Message</div>
-                                                <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Connect</div>
+                                                {amIFriend() ? <div onClick={handleMessageModel} className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Message</div> : null}
+                                                {
+                                                    userData?._id === ownData?._id ? null : <div onClick={handleSendFriendRequest} className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>{checkFriendStatus()}</div>
+                                                }
 
                                             </div>
 
@@ -160,7 +238,9 @@ const Profile = () => {
                         <Card padding={1}>
                             <div className='flex justify-between items-center'>
                                 <div className=' text-xl '>About</div>
-                                <div onClick={handleAboutInfoModel}><EditIcon className='text-gray-700 cursor-pointer' /></div>
+                                {
+                                    userData?._id === ownData?._id && <div onClick={handleAboutInfoModel}><EditIcon className='text-gray-700 cursor-pointer' /></div>
+                                }
                             </div>
                             <div className='text-gray-700 w-[80%] text-md'>
                                 {userData?.about}
@@ -221,7 +301,9 @@ const Profile = () => {
                         <Card padding={1}>
                             <div className='flex justify-between items-center'>
                                 <div className=' text-xl '>Experience</div>
-                                <div onClick={handleExperienceModel}><AddIcon className="text-orange-600 cursor-pointer" /></div>
+                                {
+                                    userData?._id === ownData?._id && <div onClick={handleExperienceModel}><AddIcon className="text-orange-600 cursor-pointer" /></div>
+                                }
                             </div>
                             {/* Expereince details  */}
                             <div className='mt-5'>
@@ -235,9 +317,11 @@ const Profile = () => {
                                                     <div className='text-gray-700 text-sm'>{item.duration}</div>
                                                     <div className='text-gray-700 text-sm'>{item.location}</div>
                                                 </div>
-                                                <div className='cursor-pointer'>
-                                                    <EditIcon className='text-gray-700 cursor-pointer' onClick={() => { updateExpEdit(item._id, item) }} />
-                                                </div>
+                                                {
+                                                    userData?._id === ownData?._id && <div className='cursor-pointer'>
+                                                        <EditIcon className='text-gray-700 cursor-pointer' onClick={() => { updateExpEdit(item._id, item) }} />
+                                                    </div>
+                                                }
 
                                             </div>
                                         );
@@ -286,6 +370,8 @@ const Profile = () => {
                     <EditmessageModel />
                 </Model>
             }
+
+            <ToastContainer />
         </div>
     )
 }

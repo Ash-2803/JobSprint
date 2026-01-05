@@ -127,7 +127,7 @@ const Post = ({ profile, item, personalData }) => {
             {
                 comment && <div className='p-4 w-full'>
                     <div className='flex gap-2 items-center'>
-                        <img src={MyImage} alt="My Image" className='rounded-4xl w-10 h-10 border-2 border-white cursor-pointer' />
+                        <img src={personalData?.profilePic} alt="My Image" className='rounded-4xl w-10 h-10 border-2 border-white cursor-pointer' />
                         <form className='w-full flex gap-2' onSubmit={handleSendcomment}>
                             <input value={commentText} onChange={(event) => setCommentText(event.target.value)} type="text" placeholder='Add a comment...' className='w-full border border-gray-300 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-orange-400' />
                             <button type="submit" className="bg-orange-400 text-white rounded-full px-4 py-2 hover:bg-orange-500">Comment</button>
@@ -137,7 +137,7 @@ const Post = ({ profile, item, personalData }) => {
                     <div className='w-full p-4'>
                         {
                             comments.map((item, index) => {
-                                return (<div className='my-4'>
+                                return (<Link to = {`/profile/${item?.user?._id}`} className='my-4'>
                                     <div className='flex gap-2 items-center cursor-pointer'>
                                         <img src={item?.user?.profilePic} alt="My Image" className='rounded-4xl w-10 h-10 border-2 border-white cursor-pointer' />
                                         <div className='cursor-pointer'>
@@ -148,7 +148,7 @@ const Post = ({ profile, item, personalData }) => {
                                     <div>
                                         <div className='ml-12 mt-2'>{item?.comment}</div>
                                     </div>
-                                </div>)
+                                </Link>)
                             })
                         }
 
