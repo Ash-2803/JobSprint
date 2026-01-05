@@ -58,6 +58,7 @@ const Profile = () => {
             setUserData(userDatas.data.user)
             setPostData(postDatas.data.posts)
             setOwnData(ownDatas.data.user)
+            localStorage.setItem('userInfo', JSON.stringify(ownDatas.data.user));
 
             // console.log(userDatas)
             // console.log(postDatas)

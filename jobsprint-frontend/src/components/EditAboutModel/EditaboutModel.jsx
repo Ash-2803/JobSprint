@@ -36,7 +36,7 @@ const EditaboutModel = ({ selfData, handleEditFunc }) => {
    }
 
    const handleOnSave = async()=>{
-      let arr = data?.skillInput.split(',');
+      let arr = data?.skillInput?.split(',');
       let newData = {...selfData,about: data.about, skills : arr,resume : data.resume}
       handleEditFunc(newData)
    }
