@@ -35,6 +35,14 @@ const Profile = () => {
     const [postData, setPostData] = useState([]);
     const [ownData, setOwnData] = useState(null);
 
+    const [updateExp, setUpdateExp] = useState({ clicked: "", id: "", datas: {} })
+
+    const updateExpEdit = (id, data) => {
+        setUpdateExp({ ...updateExp, clicked: true, id: id, data: data })
+        setexperienceModel(!experienceModel)
+    }
+
+
     useEffect(() => {
         fecthDataOnLoad()
     }, [])
@@ -67,7 +75,12 @@ const Profile = () => {
     }
 
     const handleExperienceModel = () => {
+        if (experienceModel) {
+            setexperienceModel({clicked : "",id: "",datas:{}})
+        }
         setexperienceModel(!experienceModel)
+
+
     }
     const handleAboutInfoModel = () => {
         setAboutInfoModel(!aboutInfoModel)
@@ -88,10 +101,10 @@ const Profile = () => {
         setCircularImage(true);
     }
 
-    const handleEditFunc = async(data)=>{
-        await axios.put(`http://localhost:3000/api/auth/update`,{user:data},{withCredentials:true}).then(res=>{
+    const handleEditFunc = async (data) => {
+        await axios.put(`http://localhost:3000/api/auth/update`, { user: data }, { withCredentials: true }).then(res => {
             window.location.reload();
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err);
             alert("Something went wrong")
         })
@@ -222,7 +235,7 @@ const Profile = () => {
                                                     <div className='text-gray-700 text-sm'>{item.location}</div>
                                                 </div>
                                                 <div className='cursor-pointer'>
-                                                    <div><EditIcon className='text-gray-700 cursor-pointer' /></div>
+                                                    <EditIcon className='text-gray-700 cursor-pointer' onClick={() => { updateExpEdit(item._id, item) }} />
                                                 </div>
 
                                             </div>
@@ -247,24 +260,24 @@ const Profile = () => {
             </div>
             {
                 imageSetModel && <Model title="Upload Image" closeModel={handleImageModelOpenClose} >
-                    <Imagemodel handleEditFunc = {handleEditFunc}  selfData = {ownData} isCircular={circularImage} />
+                    <Imagemodel handleEditFunc={handleEditFunc} selfData={ownData} isCircular={circularImage} />
                 </Model>
             }
             {
                 infoModel && <Model title="Edit Info" closeModel={handleinfoModel} >
-                    <EditinfoModel handleEditFunc = {handleEditFunc} selfData = {ownData} />
+                    <EditinfoModel handleEditFunc={handleEditFunc} selfData={ownData} />
                 </Model>
             }
             {
                 aboutInfoModel && <Model title="Edit About" closeModel={handleAboutInfoModel}>
-                    <EditaboutModel handleEditFunc = {handleEditFunc} selfData = {ownData} />
+                    <EditaboutModel handleEditFunc={handleEditFunc} selfData={ownData} />
 
 
                 </Model>
             }
             {
                 experienceModel && <Model title="expereince" closeModel={handleExperienceModel}>
-                    <EditExperienceModel />
+                    <EditExperienceModel handleEditFunc={handleEditFunc} selfData={ownData} updateExp={updateExp} setupdateExp={updateExpEdit} />
                 </Model>
             }
             {
