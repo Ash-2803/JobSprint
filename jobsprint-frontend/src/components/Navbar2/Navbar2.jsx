@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState , useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import './Navbar2.css'
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import Diversity3SharpIcon from '@mui/icons-material/Diversity3Sharp';
@@ -9,36 +9,69 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddSharpIcon from '@mui/icons-material/AddSharp';
 import MyImage from "../../assets/My_image.jpeg";
 import { Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const Navbar2 = () => {
-    const [searchTerm, setSearchTerm] = useState(false);
+    // const [dropDown, setdropDown] = useState(false);
     const location = useLocation();
 
     const [userData, setuserData] = useState(null)
+
+    const [searchTerm, setsearchTerm] = useState("")
+    const [deBouncedTerm, setDeBouncedTerm] = useState("")
+    const [searcUser, setsearcUser] = useState([])
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDeBouncedTerm(searchTerm)
+        }, 1000);
+        return () => {
+            clearTimeout(handler)
+        };
+    }, [searchTerm])
+
+    useEffect(() => {
+        if (deBouncedTerm) {
+            searchAPICall()
+        }
+    }, [deBouncedTerm])
+
+    const searchAPICall = async () => {
+        await axios.get(`http://localhost:3000/api/auth/findUser?query=${deBouncedTerm}`, { withCredentials: true }).then(res => {
+            console.log(res)
+
+            setsearcUser(res.data.users)
+        }).catch(err => {
+            console.log(err);
+            alert("Something went wrong")
+        });
+    }
 
     useEffect(() => {
         let userData = localStorage.getItem('userInfo')
         setuserData(userData ? JSON.parse(userData) : null)
 
     }, [])
-    console.log(location)
+    // console.log(location)
     return (
         <div className='bg-white h-13 flex justify-between py-1 xl: px-50 fixed top-0 w-full z-1000 '>
             <div className=' flex gap-2 items-center '>
                 <Link to="/feed"><img src={"https://images-platform.99static.com//x43DEvYF24dPa-bBzpxj5NL93ZY=/199x174:1839x1814/fit-in/500x500/99designs-contests-attachments/77/77692/attachment_77692903"} alt="Job Sprint logo" className='w-12 h-12' /></Link>
                 <div className='relative'>
-                    <input type="searchInput" placeholder='Search jobs, skills, companies' className='searchInput border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400 w-48 md:w-64 lg:w-80' />
+                    <input value={searchTerm} onChange={(e) => { setsearchTerm(e.target.value) }} type="searchInput" placeholder='Search jobs, skills, companies' className='searchInput border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400 w-48 md:w-64 lg:w-80' />
                     {
-                        searchTerm && <div className=' absolute w-88 left-0 bg-gray-200'>
-                            <div className='flex gap-2 items-center p-2'>
+                        searcUser.length > 0 && deBouncedTerm.length!== 0 && <div className=' absolute w-88 left-0 bg-gray-200'>
+                            {
+                                searcUser.map((item, index) => {
+                                    return (
+                                        <Link to = {`/profile/${item?._id}`} key={index} className='flex gap-2 mb-1 items-center cursor-pointer' onClick={()=>setsearchTerm("")}>
+                                            <div><img src={item?.profilePic} className='rounded-full w-10 h-10' /></div>
+                                            <div>{item?.userName}</div>
+                                        </Link>
+                                    )
+                                })
+                            }
 
-
-                                {/* Search suggestions can go here */}
-                                <div className='p-2 mb-1 gap-2 hover:bg-gray-300 cursor-pointer'>
-                                    <img src="https://www.shutterstock.com/shutterstock/videos/1098847407/thumb/7.jpg?ip=x480" alt="Animated Engineer Image" />Software Engineer</div>
-                                <div className='p-2 mb-1 gap-2 hover:bg-gray-300 cursor-pointer'><img src="https://www.shutterstock.com/shutterstock/videos/1098847407/thumb/7.jpg?ip=x480" alt="Animated Engineer Image" />Data Scientist</div>
-                                <div className='p-2 mb-1 gap-2 hover:bg-gray-300 cursor-pointer'><img src="https://www.shutterstock.com/shutterstock/videos/1098847407/thumb/7.jpg?ip=x480" alt="Animated Engineer Image" />Product Manager</div>
-                            </div>
                         </div>
                     }
                 </div>
@@ -60,11 +93,11 @@ const Navbar2 = () => {
                     <div className={`text-sm text-gray-500 ${location.pathname === "/resume" ? "border-b-3" : ""}`}>Resume
                     </div>
                 </Link>
-                <div className=' flex flex-col items-center cursor-pointer'>
+                <Link to="/jobs" className=' flex flex-col items-center cursor-pointer'>
                     <WorkIcon sx={{ color: location.pathname === "/jobs" ? "black" : "gray" }} />
                     <div className={`text-sm text-gray-500 ${location.pathname === "/jobs" ? "border-b-3" : ""}`}>Jobs
                     </div>
-                </div>
+                </Link>
                 <Link to="/messages" className=' flex flex-col items-center cursor-pointer'>
                     <ChatIcon sx={{ color: location.pathname === "/messages" ? "black" : "gray" }} />
                     <div className={`text-sm text-gray-500 ${location.pathname === "/messages" ? "border-b-3" : ""}`}>Messages

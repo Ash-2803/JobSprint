@@ -154,7 +154,7 @@ const Profile = () => {
                 alert("Something went wrong")
                 toast.error(err?.response?.data?.error)
             })
-        }else if (checkFriendStatus() === "Approve Request"){
+        } else if (checkFriendStatus() === "Approve Request") {
             await axios.post(`http://localhost:3000/api/auth/acceptFriendRequest`, { friendId: userData?._id }, { withCredentials: true }).then(res => {
                 toast.success(res.data.message)
                 setTimeout(() => {
@@ -165,8 +165,8 @@ const Profile = () => {
                 alert("Something went wrong")
                 toast.error(err?.response?.data?.error)
             })
-        }else {
-            await axios.delete(`http://localhost:3000/api/auth/removeFromFriendList/${userData?._id}`, {withCredentials:true}).then(res=>{
+        } else {
+            await axios.delete(`http://localhost:3000/api/auth/removeFromFriendList/${userData?._id}`, { withCredentials: true }).then(res => {
                 toast.success(res.data.message)
                 setTimeout(() => {
                     window.location.reload();
@@ -180,7 +180,28 @@ const Profile = () => {
         }
 
     }
+    const handleLogout = async () => {
+        await axios.post(`http://localhost:3000/api/auth/logout`, {}, { withCredentials: true }).then(res => {
+            localStorage.clear();
+            window.location.reload();
 
+        }).catch(err => {
+            console.log(err);
+            alert("Something went wrong")
+            toast.error(err?.response?.data?.error)
+        })
+    }
+
+    const copytoClipboard = async () => {
+        try {
+            let string = `http://localhost:5173/profile/${id}`
+            await navigator.clipboard.writeText(string)
+            toast.success("Copied to ClipBoard!")
+
+        } catch (err) {
+            console.error("Failed to Copy", err)
+        }
+    }
     return (
         <div className='px-5 xl:px-50 py-5  pt-12 flex flex-col gap-5 w-full mt-5 bg-gray-100'>
             <div className='flex justify-between'>
@@ -211,9 +232,9 @@ const Profile = () => {
                                         <div className='md:flex w-full justify-between'>
                                             <div className='my-5 flex gap-5'>
                                                 <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Open to</div>
-                                                <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Share Profile</div>
+                                                <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold' onClick={copytoClipboard}>Share Profile</div>
                                                 {
-                                                    userData?._id === ownData?._id && <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Logout</div>
+                                                    userData?._id === ownData?._id && <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold' onClick={handleLogout}>Logout</div>
                                                 }
                                             </div>
                                             <div className='my-5 flex gap-5'>
@@ -289,10 +310,16 @@ const Profile = () => {
 
 
                             </div>
-                            <div className='w-full flex justify-center items-center'>
-                                <Link to={`/profile/${id}/activities`} className='p-2 rounded-xl cursor-pointer hover:bg-gray-400'>Show All Posts <ArrowRightAltIcon /> </Link>
+                            {
+                                postData.slice(0, 1).map((item, index) => {
+                                    return (
+                                        <div className='w-full flex justify-center items-center'>
+                                            <Link to={`/profile/${id}/activities`} className='p-2 rounded-xl cursor-pointer hover:bg-gray-400'>Show All Posts <ArrowRightAltIcon /> </Link>
 
-                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
 
                         </Card>
 
@@ -367,7 +394,7 @@ const Profile = () => {
             }
             {
                 messageModel && <Model title="expereince" closeModel={handleMessageModel}>
-                    <EditmessageModel />
+                    <EditmessageModel selfData={ownData} userData = {userData} />
                 </Model>
             }
 

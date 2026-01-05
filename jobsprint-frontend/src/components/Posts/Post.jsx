@@ -73,6 +73,17 @@ const Post = ({ profile, item, personalData }) => {
 
     }
 
+    const copytoClipboard = async()=>{
+        try{
+            let string = `http://localhost:5173/profile/${item?.user?._id}/activities/${item?._id}`
+            await navigator.clipboard.writeText(string)
+            toast.success("Copied to ClipBoard!")
+
+        }catch(err){
+            console.error("Failed to Copy",err)
+        }
+    }
+
     //     console.log("LOGGED IN USER:", personalData.userName);
     // console.log("POST OWNER:", item.user.userName);
 
@@ -118,7 +129,7 @@ const Post = ({ profile, item, personalData }) => {
                     <div onClick={handleComment} className=' border-r border-gray-100 w-1/3 justify-center flex cursor-pointer items-center gap-2 p-2 hover:bg-gray-100'><CommentOutlinedIcon className="text-black" />
                         <span className='text-sm'>Comments</span>
                     </div>
-                    <div className=' border-r border-gray-100 w-1/3 justify-center flex cursor-pointer items-center gap-2 p-2 hover:bg-gray-100'><SendIcon className="text-black" />
+                    <div onClick={copytoClipboard} className=' border-r border-gray-100 w-1/3 justify-center flex cursor-pointer items-center gap-2 p-2 hover:bg-gray-100'><SendIcon className="text-black" />
                         <span className='text-sm'>Share</span>
                     </div>
                 </div>
