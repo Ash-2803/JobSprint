@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    expereince: [
+    experience: [
       {
         designation: {
           type: String,
