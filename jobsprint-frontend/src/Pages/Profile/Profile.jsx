@@ -257,7 +257,7 @@ const Profile = () => {
             }
             {
                 aboutInfoModel && <Model title="Edit About" closeModel={handleAboutInfoModel}>
-                    <EditaboutModel />
+                    <EditaboutModel handleEditFunc = {handleEditFunc} selfData = {ownData} />
 
 
                 </Model>
