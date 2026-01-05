@@ -87,6 +87,17 @@ const Profile = () => {
         setImageSetModel(true)
         setCircularImage(true);
     }
+
+    const handleEditFunc = async(data)=>{
+        await axios.put(`http://localhost:3000/api/auth/update`,{user:data},{withCredentials:true}).then(res=>{
+            window.location.reload();
+        }).catch(err=>{
+            console.log(err);
+            alert("Something went wrong")
+        })
+
+    }
+
     return (
         <div className='px-5 xl:px-50 py-5  pt-12 flex flex-col gap-5 w-full mt-5 bg-gray-100'>
             <div className='flex justify-between'>
@@ -236,12 +247,12 @@ const Profile = () => {
             </div>
             {
                 imageSetModel && <Model title="Upload Image" closeModel={handleImageModelOpenClose} >
-                    <Imagemodel isCircular={circularImage} />
+                    <Imagemodel handleEditFunc = {handleEditFunc}  selfData = {ownData} isCircular={circularImage} />
                 </Model>
             }
             {
                 infoModel && <Model title="Edit Info" closeModel={handleinfoModel} >
-                    <EditinfoModel />
+                    <EditinfoModel handleEditFunc = {handleEditFunc} selfData = {ownData} />
                 </Model>
             }
             {

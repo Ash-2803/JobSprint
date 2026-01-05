@@ -8,6 +8,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const Post = ({ profile, item, personalData }) => {
     const [seeMore, setSeeMore] = useState(false);
@@ -80,9 +81,9 @@ const Post = ({ profile, item, personalData }) => {
     return (
         <Card padding={0}>
             <div className='flex flex-col gap-3 p-4 '>
-                <div className='w-12 h-12 rounded-4xl'>
+                <Link to = {`/profile/${item?.user?._id}`} className='w-12 h-12 rounded-4xl'>
                     <img className='rounded-4xl cursor-pointer w-12 h-12 border-white border-2' src={item?.user?.profilePic} alt="My Image" />
-                </div>
+                </Link>
                 <div>
                     <div className='text-lg font-semibold'>{item?.user?.userName}</div>
                     <div className='text-sm text-gray-500'>{item?.user?.headline}</div>
