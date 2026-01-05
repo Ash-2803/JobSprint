@@ -6,7 +6,7 @@ import MyImage from "../../assets/My_image.jpeg";
 import EditIcon from '@mui/icons-material/Edit';
 import Post from '../../components/Posts/Post';
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Model from '../../components/Models/Model';
 import Imagemodel from '../../components/ImageModel/Imagemodel';
 import EditinfoModel from '../../components/EditinfoModel/EditinfoModel';
@@ -16,6 +16,7 @@ import EditmessageModel from '../../components/EditMessageModel/EditmessageModel
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 const Profile = () => {
@@ -29,6 +30,37 @@ const Profile = () => {
     const [aboutInfoModel, setAboutInfoModel] = useState(false);
     const [experienceModel, setexperienceModel] = useState(false)
     const [messageModel, setmessageModel] = useState(false);
+
+    const [userData, setUserData] = useState(null);
+    const [postData, setPostData] = useState([]);
+    const [ownData, setOwnData] = useState(null);
+
+    useEffect(() => {
+        fecthDataOnLoad()
+    }, [])
+
+    const fecthDataOnLoad = async () => {
+        try {
+            const [userDatas, postDatas, ownDatas] = await Promise.all([
+                axios.get(`http://localhost:3000/api/auth/user/${id}`),
+                axios.get(`http://localhost:3000/api/post/getTop5Post/${id}`),
+                axios.get('http://localhost:3000/api/auth/self', { withCredentials: true })
+            ])
+
+            setUserData(userDatas.data.user)
+            setPostData(postDatas.data.posts)
+            setOwnData(ownDatas.data.user)
+
+            // console.log(userDatas)
+            // console.log(postDatas)
+            // console.log(ownDatas)
+
+        } catch (err) {
+            console.log(err)
+            alert("Something went wrong")
+        }
+    }
+
 
     const handleMessageModel = () => {
         setmessageModel(!messageModel)
@@ -66,17 +98,17 @@ const Profile = () => {
                                 <div className='relative w-full h-50'>
                                     <div className='absolute cursor-pointer top-3 right-3 z-20 w-8.75 flex justify-center items-center h-8.5 rounded-full p-3 bg-white ' onClick={handleonEditCover}><EditIcon className='text-gray-700' /></div>
 
-                                    <img className='w-full h-50 rounded-tr-lg rounded-t-lg' src="https://media.istockphoto.com/id/944812540/photo/mountain-landscape-ponta-delgada-island-azores.jpg?s=612x612&w=0&k=20&c=mbS8X4gtJki3gGDjfC0sG3rsz7D0nls53a0b4OPXLnE=" alt="LandScape Image" />
-                                    <div onClick={handleCircularImageOpen} className='absolute object-cover top-24 z-10 left-6'><img className="rounded-full border-2 border-white cursor-pointer w-35 h-35" src={MyImage} alt="Oggy" /></div>
+                                    <img className='w-full h-50 rounded-tr-lg rounded-t-lg' src={userData?.coverPic} alt="LandScape Image" />
+                                    <div onClick={handleCircularImageOpen} className='absolute object-cover top-24 z-10 left-6'><img className="rounded-full border-2 border-white cursor-pointer w-35 h-35" src={userData?.profilePic} alt="Oggy" /></div>
 
                                 </div>
                                 <div className='mt-10 relative px-8 py-2'>
                                     <div className='absolute cursor-pointer top-3 right-3 z-20 w-8.75 flex justify-center items-center h-8.5 rounded-full p-3 bg-white ' onClick={handleinfoModel} ><EditIcon className='text-gray-700' /></div>
                                     <div className='w-full'>
-                                        <div className='text-2xl font-bold'>Ash</div>
-                                        <div className='text-gray-700'>Software Engineer | Full Stack Developer</div>
-                                        <div className='text-gray-500'>Delhi</div>
-                                        <div className='text-orange-800 text-md hover:underline w-fit cursor-pointer'>500+ connections</div>
+                                        <div className='text-2xl font-bold'>{userData?.userName}</div>
+                                        <div className='text-gray-700'>{userData?.headline}</div>
+                                        <div className='text-gray-500'>{userData?.curr_location}</div>
+                                        <div className='text-orange-800 text-md hover:underline w-fit cursor-pointer'>{userData?.friends?.length} connections</div>
                                         <div className='md:flex w-full justify-between'>
                                             <div className='my-5 flex gap-5'>
                                                 <div className='cursor-pointer p-2 border rounded-lg bg-orange-500 text-white font-semibold'>Open to</div>
@@ -106,7 +138,7 @@ const Profile = () => {
                                 <div onClick={handleAboutInfoModel}><EditIcon className='text-gray-700 cursor-pointer' /></div>
                             </div>
                             <div className='text-gray-700 w-[80%] text-md'>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit, soluta amet a nostrum doloribus provident voluptatibus facilis, debitis, nemo sequi! Numquam, impedit eligendi. Veniam voluptas eius soluta minima totam?
+                                {userData?.about}
                             </div>
                         </Card>
                     </div>
@@ -117,12 +149,14 @@ const Profile = () => {
                             </div>
                             <div className='text-gray-700 text-md my-2 w-full flex gap-4 flex-wrap'>
 
-                                <div className='py-2 px-3 cursor-pointer bg-orange-700 text-white rounded-lg'>JavaScript</div>
-                                <div className='py-2 px-3 cursor-pointer bg-orange-700 text-white rounded-lg'>React</div>
-                                <div className='py-2 px-3 cursor-pointer bg-orange-700 text-white rounded-lg'>Node.js</div>
-                                <div className='py-2 px-3 cursor-pointer bg-orange-700 text-white rounded-lg'>Express</div>
-                                <div className='py-2 px-3 cursor-pointer bg-orange-700 text-white rounded-lg'>Python</div>
-                                <div className='py-2 px-3 cursor-pointer bg-orange-700 text-white rounded-lg'>Mongo DB</div>
+                                {
+                                    userData?.skills.map((item, index) => {
+                                        return (
+                                            <div key={index} className='py-2 px-3 cursor-pointer bg-orange-700 text-white rounded-lg'>{item}</div>
+                                        )
+                                    })
+                                }
+
 
                             </div>
                         </Card>
@@ -137,18 +171,17 @@ const Profile = () => {
                             <div className='cursor-pointer px-3 py-1 w-fit border rounded-4xl bg-purple-500 text-white font-semibold' >Posts</div>
                             {/* Parent div for scroll activity */}
                             <div className='overflow-x-auto my-2 flex gap-1 overflow-y-hidden w-full'>
-                                <Link to={`/profile/:${id}/activities/:111`} className='shrink-0 cursor-pointer w-87.5 h-140 '>
+                                {
+                                    postData.map((item, index) => {
+                                        return (
+                                            <Link to={`/profile/:${id}/activities/${item?._id}`} className='shrink-0 cursor-pointer w-87.5 h-140 '>
 
-                                    <Post profile={1} />
-                                </Link>
-                                <Link to={`/profile/:${id}/activities/:112`} className='shrink-0 cursor-pointer w-87.5 h-140 '>
+                                                <Post profile={1} item={item} personalData={ownData} />
+                                            </Link>
+                                        )
+                                    })
+                                }
 
-                                    <Post profile={1} />
-                                </Link>
-                                <Link to={`/profile/:${id}/activities/:113`} className='shrink-0 cursor-pointer w-87.5 h-140 '>
-
-                                    <Post profile={1} />
-                                </Link>
 
                             </div>
                             <div className='w-full flex justify-center items-center'>
@@ -167,28 +200,25 @@ const Profile = () => {
                             </div>
                             {/* Expereince details  */}
                             <div className='mt-5'>
-                                <div className='p-2 border-t border-gray-300 flex justify-between'>
-                                    <div>
-                                        <div className='font-bold text-lg'>Software Engineer</div>
-                                        <div className='text-gray-700 text-sm'>Tech Company | Jan 2020 - Present</div>
-                                        <div className='text-gray-700 text-sm'>New Delhi, India</div>
-                                    </div>
-                                    <div className='cursor-pointer'>
-                                        <div><EditIcon className='text-gray-700 cursor-pointer' /></div>
-                                    </div>
+                                {
+                                    userData?.experience.map((item, index) => {
+                                        return (
+                                            <div className='p-2 border-t border-gray-300 flex justify-between'>
+                                                <div>
+                                                    <div className='font-bold text-lg'>{item.designation}</div>
+                                                    <div className='text-gray-700 text-sm'>{item.company_name}</div>
+                                                    <div className='text-gray-700 text-sm'>{item.duration}</div>
+                                                    <div className='text-gray-700 text-sm'>{item.location}</div>
+                                                </div>
+                                                <div className='cursor-pointer'>
+                                                    <div><EditIcon className='text-gray-700 cursor-pointer' /></div>
+                                                </div>
 
-                                </div>
-                                <div className='p-2 border-t border-gray-300 flex justify-between'>
-                                    <div>
-                                        <div className='font-bold text-lg'>Software Engineer</div>
-                                        <div className='text-gray-700 text-sm'>Tech Company | Jan 2020 - Present</div>
-                                        <div className='text-gray-700 text-sm'>New Delhi, India</div>
-                                    </div>
-                                    <div className='cursor-pointer'>
-                                        <div><EditIcon className='text-gray-700 cursor-pointer' /></div>
-                                    </div>
+                                            </div>
+                                        );
+                                    })
+                                }
 
-                                </div>
 
                             </div>
                         </Card>
