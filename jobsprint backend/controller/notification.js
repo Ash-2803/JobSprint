@@ -6,13 +6,13 @@ const notificationModel = require("../models/notification");
 exports.getNotification = async (req, res) => {
   try {
     const selfId = req.user._id;
-    const notifications = await notificationModel
-      .find({ receiver: selfId })
+    const notification = await notificationModel
+      .find({ receiver: selfId, sender:{ $ne: selfId }  })
       .sort({ createdAt: -1 })
-      .populate("sender", "reciever");
+      .populate("sender");
     return res.status(200).json({
       message: "Notification Fetched Successfully",
-      notifications: notifications,
+      notification: notification,
     });
   } catch (err) {
     console.error(err);
@@ -25,9 +25,7 @@ exports.getNotification = async (req, res) => {
 exports.updateIsRead = async (req, res) => {
   try {
     const { notificationId } = req.body;
-    const notification = await notificationModel.findByIdAndUpdate({
-      isRead: true,
-    });
+    const notification = await notificationModel.findByIdAndUpdate(notificationId,{isRead: true,});
     if (!notification) {
       return res.status(404).json({ error: "Notification not found" });
     }
