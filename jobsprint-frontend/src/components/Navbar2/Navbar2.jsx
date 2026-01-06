@@ -21,6 +21,8 @@ const Navbar2 = () => {
     const [deBouncedTerm, setDeBouncedTerm] = useState("")
     const [searcUser, setsearcUser] = useState([])
 
+    const [notificationCount,setnotificationCount] = useState("")
+
     useEffect(() => {
         const handler = setTimeout(() => {
             setDeBouncedTerm(searchTerm)
@@ -39,8 +41,19 @@ const Navbar2 = () => {
     const searchAPICall = async () => {
         await axios.get(`http://localhost:3000/api/auth/findUser?query=${deBouncedTerm}`, { withCredentials: true }).then(res => {
             console.log(res)
+            
 
             setsearcUser(res.data.users)
+        }).catch(err => {
+            console.log(err);
+            alert("Something went wrong")
+        });
+    }
+
+    const fetchNotification = async()=>{
+        await axios.get(`http://localhost:3000/api/notification/activeNotification`,{withCredentials:true}).then(res=>{
+            var count = res.data.count
+            setnotificationCount(count)
         }).catch(err => {
             console.log(err);
             alert("Something went wrong")
@@ -50,6 +63,8 @@ const Navbar2 = () => {
     useEffect(() => {
         let userData = localStorage.getItem('userInfo')
         setuserData(userData ? JSON.parse(userData) : null)
+
+        fetchNotification()
 
     }, [])
     // console.log(location)
@@ -104,7 +119,7 @@ const Navbar2 = () => {
                     </div>
                 </Link>
                 <Link to={`/notification`} className=' flex flex-col items-center cursor-pointer'>
-                    <div><NotificationsIcon sx={{ color: location.pathname === "/notifications" ? "black" : "gray" }} /> <span className='p-1 rounded-full text-sm bg-red-600 text-white'>1</span></div>
+                    <div><NotificationsIcon sx={{ color: location.pathname === "/notifications" ? "black" : "gray" }} /> { notificationCount>0 && <span className='p-1 rounded-full text-sm bg-red-600 text-white'>{notificationCount}</span>} </div>
                     <div className={`text-sm text-gray-500 ${location.pathname === "/notification" ? "border-b-3" : ""}`}>Notifications
                     </div>
                 </Link>
