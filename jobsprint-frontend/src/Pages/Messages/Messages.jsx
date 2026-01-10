@@ -29,13 +29,13 @@ const Messages = () => {
 
     const ref = useRef();
 
-    useEffect(()=>{
-        ref?.current?.scrollIntoView({behaviour : "smooth"})
-    },[messages])
+    useEffect(() => {
+        ref?.current?.scrollIntoView({ behaviour: "smooth" })
+    }, [messages])
 
     const handleSelctedConv = (id, userData) => {
         setActiveConvId(id)
-        socket.emit("joinConversation",id)
+        socket.emit("joinConversation", id)
         setSelectedConvDetails(userData)
     }
 
@@ -53,12 +53,12 @@ const Messages = () => {
 
     }, [activeConvId])
 
-    useEffect(()=>{
-        socket.on("receiveMessage",(response)=>{
+    useEffect(() => {
+        socket.on("receiveMessage", (response) => {
             // console.log(response)
-            setMessages([...messages,response])
+            setMessages([...messages, response])
         })
-    },[messages])
+    }, [messages])
 
     const fetchMessages = async () => {
         await axios.get(`http://localhost:3000/api/message/${activeConvId}`, { withCredentials: true }).then(res => {
@@ -93,25 +93,35 @@ const Messages = () => {
     }
 
     const fetchConversationOnLoad = async () => {
-        await axios.get('http://localhost:3000/api/conversation/get-conversation', { withCredentials: true }).then(res => {
-            // console.log(res.data.conversations)
-            setConversations(res.data.conversations)
-            setActiveConvId(res.data?.conversations[0]?._id)
-            socket.emit("joinConversation",res.data?.conversations[0]?._id)
-            let ownId = ownData?._id;
-            let arr = res.data?.conversations[0]?.members?.filter((it) => it._id !== ownId)
-            setSelectedConvDetails(arr)
+        // 1. Get userInfo directly to ensure ownId is NOT null
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const ownId = userInfo?._id;
 
+        await axios.get('http://localhost:3000/api/conversation/get-conversation', { withCredentials: true }).then(res => {
+            setConversations(res.data.conversations);
+
+            const firstConversation = res.data?.conversations[0];
+
+            if (firstConversation) {
+                setActiveConvId(firstConversation._id);
+                socket.emit("joinConversation", firstConversation._id);
+
+                // 2. Use the local ownId variable for a reliable comparison
+                const otherMember = firstConversation.members?.find((it) =>
+                    String(it._id) !== String(ownId)
+                );
+
+                setSelectedConvDetails(otherMember);
+            }
         }).catch(err => {
             console.log(err);
-            alert("Something went wrong")
-        })
+        });
     }
 
     const handleSendMessage = async () => {
-        await axios.post(`http://localhost:3000/api/message`,{conversation:activeConvId , message : messageText, picture : imageLink}, { withCredentials: true }).then(res =>{
+        await axios.post(`http://localhost:3000/api/message`, { conversation: activeConvId, message: messageText, picture: imageLink }, { withCredentials: true }).then(res => {
             console.log(res)
-            socket.emit("sendMessage",activeConvId,res.data)
+            socket.emit("sendMessage", activeConvId, res.data)
             setMessageText("")
         }).catch(err => {
             console.log(err);
@@ -161,7 +171,7 @@ const Messages = () => {
                                 </div>
                                 <div className='h-90 w-full overflow-auto border-b border-gray-300'>
                                     <div className='w-full border-b border-gray-300 gap-3 p-4 '>
-                                        <img src={selectedConvDetails?.profilePic} alt="Oggy" className='rounded-[100%] cursor-pointer w-16 h-15' />
+                                        <img src={selectedConvDetails?.profilePic} alt="" className='rounded-[100%] cursor-pointer w-16 h-15' />
                                         <div className='my-2'>
                                             <div className='text-md'>{selectedConvDetails?.userName}</div>
                                             <div className='text-sm text-gray-500'>{selectedConvDetails?.headline}</div>
