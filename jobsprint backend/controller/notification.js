@@ -9,7 +9,7 @@ exports.getNotification = async (req, res) => {
     const notification = await notificationModel
       .find({ receiver: selfId, sender:{ $ne: selfId }  })
       .sort({ createdAt: -1 })
-      .populate("sender");
+      .populate("sender").populate('receiver')
     return res.status(200).json({
       message: "Notification Fetched Successfully",
       notification: notification,
