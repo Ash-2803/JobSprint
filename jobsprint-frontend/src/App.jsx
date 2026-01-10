@@ -17,7 +17,7 @@ import Profile from './Pages/Profile/Profile'
 import Allactivities from './Pages/AllActivities/Allactivities'
 import SingleActivity from './Pages/SingleActivity/SingleActivity'
 import Notification from './Pages/Notification/Notification'
-import axios from 'axios';
+  
 
 function App() {
   // const isLogin = false;

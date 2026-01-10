@@ -5,8 +5,9 @@ import Conversation from '../../components/Conversation/Conversation';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ImageIcon from '@mui/icons-material/Image';
 import Advertisement from '../../components/Advertisement/Advertisement';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import socket from '../../../socket'
 
 const Messages = () => {
 
@@ -26,8 +27,15 @@ const Messages = () => {
 
     const [messageText, setMessageText] = useState("")
 
+    const ref = useRef();
+
+    useEffect(()=>{
+        ref?.current?.scrollIntoView({behaviour : "smooth"})
+    },[messages])
+
     const handleSelctedConv = (id, userData) => {
         setActiveConvId(id)
+        socket.emit("joinConversation",id)
         setSelectedConvDetails(userData)
     }
 
@@ -44,6 +52,13 @@ const Messages = () => {
         }
 
     }, [activeConvId])
+
+    useEffect(()=>{
+        socket.on("receiveMessage",(response)=>{
+            // console.log(response)
+            setMessages([...messages,response])
+        })
+    },[messages])
 
     const fetchMessages = async () => {
         await axios.get(`http://localhost:3000/api/message/${activeConvId}`, { withCredentials: true }).then(res => {
@@ -79,9 +94,10 @@ const Messages = () => {
 
     const fetchConversationOnLoad = async () => {
         await axios.get('http://localhost:3000/api/conversation/get-conversation', { withCredentials: true }).then(res => {
-            console.log(res.data.conversations)
+            // console.log(res.data.conversations)
             setConversations(res.data.conversations)
             setActiveConvId(res.data?.conversations[0]?._id)
+            socket.emit("joinConversation",res.data?.conversations[0]?._id)
             let ownId = ownData?._id;
             let arr = res.data?.conversations[0]?.members?.filter((it) => it._id !== ownId)
             setSelectedConvDetails(arr)
@@ -95,6 +111,8 @@ const Messages = () => {
     const handleSendMessage = async () => {
         await axios.post(`http://localhost:3000/api/message`,{conversation:activeConvId , message : messageText, picture : imageLink}, { withCredentials: true }).then(res =>{
             console.log(res)
+            socket.emit("sendMessage",activeConvId,res.data)
+            setMessageText("")
         }).catch(err => {
             console.log(err);
             alert("Something went wrong")
@@ -156,7 +174,7 @@ const Messages = () => {
                                         {
                                             messages.map((item, index) => {
                                                 return (
-                                                    <div key={index} className='flex w-full cursor-pointer border-gray-300 gap-3 p-4'>
+                                                    <div ref={ref} key={index} className='flex w-full cursor-pointer border-gray-300 gap-3 p-4'>
                                                         <div className='shrink-0'>
                                                             <img src={item?.sender?.profilePic} alt="" className='rounded-[100%] cursor-pointer w-12 h-12' />
                                                         </div>
