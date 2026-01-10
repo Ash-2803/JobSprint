@@ -94,6 +94,11 @@ exports.login = async (req, res) => {
     const { emailId, password } = req.body;
     const userExist = await User.findOne({ emailId });
     // console.log(userExist)
+    if(userExist && !userExist.password){
+      return res.status(400).json({
+        error : "Please login through Gmail"
+      })
+    }
     if (!userExist) {
       return res.status(401).json({ error: "Invalid Email or password" });
     }

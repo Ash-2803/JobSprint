@@ -2,9 +2,18 @@ const express = require("express");
 // const { default: mongoose } = require("mongoose");
 const app = express();
 const cookieParser = require("cookie-parser");
-
 const cors = require('cors')
+const http = require('http')
+const server = http.createServer(app)
+const { Server } = require("socket.io");
 
+
+const io = new Server(server,{
+  cors:{
+    origin : 'http://localhost:5173',
+    methods : ['GET', 'POST']
+  }
+})
 require("./connection.js");
 require("dotenv").config();
 
@@ -17,6 +26,23 @@ app.use(cors({
   credentials : true,
   origin : "http://localhost:5173"
 }))
+
+io.on('connection',(socket)=>{
+
+  console.log("User Connected")
+
+  socket.on("joinConversation" , (conversationId)=>{
+    console.log(`User Joined Conversation ID of ${conversationId}`)
+    socket.join(conversationId)
+  })
+
+  socket.on("sendMessage",(convID,messageDetail)=>{
+    console.log("Message Sent")
+    io.to(convID).emit("receiveMessage",messageDetail)
+  })
+
+
+})
 
 const UserRoute = require("./Routes/user.js");
 const PortRoute = require("./Routes/post.js");
@@ -32,6 +58,6 @@ app.use("/api/comments", CommentRoute);
 app.use("/api/conversation", CoversationRoute);
 app.use("/api/message", MessageRoute);
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port http://localhost:`, PORT);
+server.listen(PORT, () => {
+  console.log(`Backedn Server is running on port http://localhost:`, PORT);
 });
