@@ -16,8 +16,8 @@ const Notification = () => {
 
   const fetchNotificationData = async () => {
     await axios.get(`http://localhost:3000/api/notification`, { withCredentials: true }).then(res => {
-      console.log(res.data.notification)
-      setNotifications(res.data.notification)
+      // console.log(res.data.notification)
+      setNotifications(res.data.notification || [])
     }).catch(err => {
       console.log(err);
       alert("Something went wrong")
@@ -27,13 +27,13 @@ const Notification = () => {
 
   const handleOnClickNotification = async (item) => {
     await axios.put(`http://localhost:3000/api/notification/isRead`, { notificationId: item._id }, { withCredentials: true }).then(res => {
-        if (item.type === "comment" && item.postId) {
-            // Ensure ownData is populated before using it
-            const userId = ownData?._id || JSON.parse(localStorage.getItem('userInfo'))?._id;
-            navigate(`/profile/${userId}/activities/${item.postId}`);
-        } else {
-            navigate(`/mynetwork`);
-        }
+      if (item.type === "comment" && item.postId) {
+        // Ensure ownData is populated before using it
+        const userId = ownData?._id || JSON.parse(localStorage.getItem('userInfo'))?._id;
+        navigate(`/profile/${userId}/activities/${item.postId}`);
+      } else {
+        navigate(`/mynetwork`);
+      }
 
     }).catch(err => {
       console.log(err);
@@ -51,7 +51,7 @@ const Notification = () => {
   }, [])
 
 
-
+console.log("OWN DATA:", ownData)
   return (
     <div className='px-4 xl:px-50 py-9 flex gap-5 w-full mt-5 bg-gray-100'>
       {/* left side  */}
@@ -71,7 +71,7 @@ const Notification = () => {
               {
                 notifications.map((item, index) => {
                   return (
-                    <div key={index} onClick={(e) => { handleOnClickNotification(item) }} className={`border-b cursor-pointer flex gap-4 items-center border-gray-300 p-3 ${item?.isRead ? "bg-gray-200" : "bg-orange-200"}`}>
+                    <div key={ item._id || index} onClick={(e) => { handleOnClickNotification(item) }} className={`border-b cursor-pointer flex gap-4 items-center border-gray-300 p-3 ${item?.isRead ? "bg-gray-200" : "bg-orange-200"}`}>
                       <img src={item?.sender?.profilePic} className='rounded-b-4xl cursor-pointer w-15 h-15 ' />
                       <div>{item?.content}</div>
                     </div>

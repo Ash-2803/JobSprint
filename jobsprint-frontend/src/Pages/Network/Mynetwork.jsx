@@ -29,7 +29,7 @@ const Mynetwork = () => {
 
     const fetchPendingRequest = async () => {
         await axios.get(`http://localhost:3000/api/auth/PendingFriendList`, { withCredentials: true }).then(res => {
-            console.log(res)
+            // console.log(res)
             setData(res.data.pendingFriends)
         }).catch(err => {
             console.log(err);
