@@ -37,12 +37,12 @@ const userSchema = new mongoose.Schema(
     profilePic: {
       type: String,
       default:
-        "https://imgs.search.brave.com/TtfH1ZtEa1uEepTRsNF9GvcrSquOUMC5hW8z4UYh64c/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/ZHJpYmJibGUuY29t/L3VzZXJ1cGxvYWQv/MjAwNzMwMDkvZmls/ZS9vcmlnaW5hbC1l/ZWJiMTk4OTVjYzI4/ZWYzNjlkNWMxYTU2/M2FiMjMyZC5qcGc_/Zm9ybWF0PXdlYnAm/cmVzaXplPTQwMHgz/MDAmdmVydGljYWw9/Y2VudGVy",
+        "https://stock.adobe.com/search?k=default",
     },
     coverPic: {
       type: String,
       default:
-        "https://imgs.search.brave.com/z81Bfq-T92zCpO2R3Ip8xl5ZFtYvXHmMCRkCAnIwzHc/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/c2h1dHRlcnN0b2Nr/LmNvbS9pbWFnZS12/ZWN0b3IvZGVmYXVs/dC10aHVtYm5haWwt/aW1hZ2UtcGljdHVy/ZS1pY29uLTI2MG53/LTIzNzc0ODAxNTku/anBn",
+        "https://imgs.search.brave.com/SqT65iTufTledQDV4t6YawUZYxTsv2BJjxBYlbH2ERI/rs:fit:0:180:1:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1X3Ns/OHY3L3N0eWxlcy9i/YW5uZXJCYWNrZ3Jv/dW5kSW1hZ2VfYXVn/aWQ2NXRnYWMyMS5w/bmc",
     },
     about: {
       type: String,

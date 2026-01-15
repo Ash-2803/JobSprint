@@ -71,14 +71,8 @@ exports.register = async (req, res) => {
           "Already have an account with thie email , Please try with other email ",
       });
     }
-
-    // if (password !== confirm_password) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: "Please fill the correct password" });
-    // }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ emailId, password: hashedPassword, userName,profilePic });
+    const newUser = new User({ emailId, password: hashedPassword, userName,profilePic: `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}` });
     await newUser.save();
 
     newUser.password = undefined;
@@ -89,7 +83,7 @@ exports.register = async (req, res) => {
       data: newUser,
     });
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     res.status(500).json({ error: "Server Error", message: err.message });
   }
 };
