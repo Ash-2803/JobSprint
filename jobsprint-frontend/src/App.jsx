@@ -17,6 +17,7 @@ import Profile from './Pages/Profile/Profile'
 import Allactivities from './Pages/AllActivities/Allactivities'
 import SingleActivity from './Pages/SingleActivity/SingleActivity'
 import Notification from './Pages/Notification/Notification'
+// import Jobs from './Pages/Jobs/Jobs'
   
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
       <Route path='/resume' element={isLogin?<Resume/> : <Navigate to ={'/signin'}/>}/>
       <Route path='/messages' element={isLogin?<Messages/> : <Navigate to ={'/signin'}/>}/>
       <Route path='/notification' element={isLogin?<Notification/> : <Navigate to ={'/signin'}/>}/>
+      {/* <Route path='/jobs' element={isLogin?<Jobs/> : <Navigate to ={'/signin'}/>}/> */}
       <Route path='/profile/:id' element={isLogin?<Profile/> : <Navigate to ={'/signin'}/>} />
       <Route path='/profile/:id/activities' element={isLogin?<Allactivities/> : <Navigate to ={'/signin'}/>}/>
       <Route path='/profile/:id/activities/:postId' element={isLogin?<SingleActivity/> : <Navigate to ={'/signin'}/>}/>

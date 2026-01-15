@@ -41,8 +41,8 @@ const Signup = (props) => {
                         <input type="email" value={registerField.emailId} onChange={(e) => { handleInputField(e, 'emailId') }} className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Enter your email' />
                         <label htmlFor="password">Password</label>
                         <input type="password" value={registerField.password} onChange={(e) => { handleInputField(e, 'password') }} className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Enter your password' />
-                        <label htmlFor="confirm_password">Confirm Password</label>
-                        <input type="password" value={registerField.confirm_password} onChange={(e) => { handleInputField(e, 'confirm_password') }} className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Confirm your password' />
+                        {/* <label htmlFor="confirm_password">Confirm Password</label>
+                        <input type="password" value={registerField.confirm_password} onChange={(e) => { handleInputField(e, 'confirm_password') }} className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Confirm your password' /> */}
                         <div className='mt-4'>
                             <button onClick={handleSignup} className='w-full bg-orange-400 text-white py-3 rounded-md hover:bg-orange-500 cursor-pointer'>Sign Up</button>
                         </div>
