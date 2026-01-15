@@ -9,20 +9,20 @@ const Signup = (props) => {
     const navigate = useNavigate();
 
 
-    const [registerField, setRegisterField] = useState({ emailId: "", password: "", confirm_password: "", userName: "" })
+    const [registerField, setRegisterField] = useState({ emailId: "", password: "", userName: "" })
 
     const handleInputField = (event, key) => {
         setRegisterField({ ...registerField, [key]: event.target.value })
     }
 
     const handleSignup = async () => {
-        if (registerField.emailId.trim().length === 0 || registerField.password.trim().length === 0 || registerField.confirm_password.trim().length === 0 || registerField.userName.trim().length === 0) {
+        if (registerField.emailId.trim().length === 0 || registerField.password.trim().length === 0 || registerField.userName.trim().length === 0) {
             return toast.error("Please fill All the details")
         }
         await axios.post('http://localhost:3000/api/auth/register', registerField,{withCredentials:true}).then(res => {
 
             toast.success("You have registered successfully")
-            setRegisterField({...registerField , emailId : "" , password : "" , confirm_password : "", userName : ""})
+            setRegisterField({...registerField , emailId : "" , password : "", userName : ""})
             navigate('/signin')
         }).catch((err) => {
             console.log(err)
