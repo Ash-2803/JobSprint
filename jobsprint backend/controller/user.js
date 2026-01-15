@@ -23,16 +23,23 @@ exports.loginThroughGmail = async (req, res) => {
     });
 
     const payload = ticket.getPayload();
-    
-    const { sub, email , name, picture } = payload;
-  
 
-    let userExist = await User.findOne({ email });
+    const { sub, email, name, picture } = payload;
+
+    // let userExist = await User.findOne({ email });
+    let userExist = await User.findOne({ emailId: email });
+
+    // If user exists but logged in via email before
+    if (userExist && !userExist.googleId) {
+      userExist.googleId = sub;
+      userExist.profilePic = picture;
+      await userExist.save();
+    }
 
     if (!userExist) {
       userExist = await User.create({
         googleId: sub,
-        emailId:email,
+        emailId: email,
         userName: name,
         profilePic: picture,
       });
@@ -56,7 +63,7 @@ exports.loginThroughGmail = async (req, res) => {
 exports.register = async (req, res) => {
   try {
     // console.log(req.body)
-    const { emailId, password, confirm_password, userName } = req.body;
+    const { emailId, password, userName } = req.body;
     const userExist = await User.findOne({ emailId });
     if (userExist) {
       return res.status(400).json({
@@ -65,13 +72,13 @@ exports.register = async (req, res) => {
       });
     }
 
-    if (password !== confirm_password) {
-      return res
-        .status(400)
-        .json({ error: "Please fill the correct password" });
-    }
+    // if (password !== confirm_password) {
+    //   return res
+    //     .status(400)
+    //     .json({ error: "Please fill the correct password" });
+    // }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ emailId, password: hashedPassword, userName });
+    const newUser = new User({ emailId, password: hashedPassword, userName,profilePic });
     await newUser.save();
 
     newUser.password = undefined;
@@ -94,10 +101,10 @@ exports.login = async (req, res) => {
     const { emailId, password } = req.body;
     const userExist = await User.findOne({ emailId });
     // console.log(userExist)
-    if(userExist && !userExist.password){
+    if (userExist && !userExist.password) {
       return res.status(400).json({
-        error : "Please login through Gmail"
-      })
+        error: "Please login through Gmail",
+      });
     }
     if (!userExist) {
       return res.status(401).json({ error: "Invalid Email or password" });
@@ -302,77 +309,70 @@ exports.acceptFriendRequest = async (req, res) => {
   }
 };
 
-// get the friend list 
+// get the friend list
 
-exports.getfriendList = async(req,res)=>{
-  try{
-    const friendList = await req.user.populate('friends');
+exports.getfriendList = async (req, res) => {
+  try {
+    const friendList = await req.user.populate("friends");
     return res.status(200).json({
-      friends :friendList.friends
-    })
-
-  }catch (err) {
+      friends: friendList.friends,
+    });
+  } catch (err) {
     res.status(500).json({ error: "Server Error", message: err.message });
   }
-}
+};
 // pending requests
 
-exports.getPendingFriendList = async(req,res)=>{
-  try{
-    const pendingFriendList = await req.user.populate('pending_friends');
+exports.getPendingFriendList = async (req, res) => {
+  try {
+    const pendingFriendList = await req.user.populate("pending_friends");
     return res.status(200).json({
-      pendingFriends :pendingFriendList.pending_friends
-    })
-
-  }catch (err) {
+      pendingFriends: pendingFriendList.pending_friends,
+    });
+  } catch (err) {
     res.status(500).json({ error: "Server Error", message: err.message });
   }
-}
+};
 
 // removing the friends
 
-exports.removeFromFriendList = async(req,res)=>{
-  try{
+exports.removeFromFriendList = async (req, res) => {
+  try {
     const selfId = req.user._id;
-    const {friendId} = req.params;
+    const { friendId } = req.params;
 
     const friendData = await User.findById(friendId);
-    if(!friendData){
+    if (!friendData) {
       return res.status(400).json({
-        error : " No such user exist"
-      })
+        error: " No such user exist",
+      });
     }
 
-    const index = req.user.friends.findIndex(id=> id.equals(friendId));
+    const index = req.user.friends.findIndex((id) => id.equals(friendId));
 
-    const friendIndex = friendData.friends.findIndex(id=> id.equals(selfId));
+    const friendIndex = friendData.friends.findIndex((id) => id.equals(selfId));
 
-    if(index!==-1){
-      req.user.friends.splice(index,1);
-    }else{
+    if (index !== -1) {
+      req.user.friends.splice(index, 1);
+    } else {
       return res.status(400).json({
-        error : "No any request from such users"
-      })
+        error: "No any request from such users",
+      });
     }
-    if(friendIndex!==-1){
-      friendData.friends.splice(friendIndex,1)
-    }else{
+    if (friendIndex !== -1) {
+      friendData.friends.splice(friendIndex, 1);
+    } else {
       return res.status(400).json({
-        error : "No any request from such users"
-      })
+        error: "No any request from such users",
+      });
     }
-
 
     await req.user.save();
     await friendData.save();
     return res.status(200).json({
-      message : "You both are disconnected now"
-    })
-
-
-
-
-  }catch (err) {
+      message: "You both are disconnected now",
+    });
+  } catch (err) {
     res.status(500).json({ error: "Server Error", message: err.message });
   }
-}
+};

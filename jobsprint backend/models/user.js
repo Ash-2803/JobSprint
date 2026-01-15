@@ -6,16 +6,17 @@ const userSchema = new mongoose.Schema(
   {
     googleId: {
       type: String,
+      unique: true,
+      sparse: true,
+      
     },
     emailId: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
-    },
-    confirm_password:{
-      type:String,
     },
     userName: {
       type: String,
